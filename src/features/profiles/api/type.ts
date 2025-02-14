@@ -1,4 +1,4 @@
-import type { ApiResponse } from "@/shared/api/response.type";
+import type { ApiResponse } from "@/src/shared/api/type";
 import type { Profile } from "@/entities/profiles/model/profile.type";
 
 // 공유 많은 순, 최신 순
