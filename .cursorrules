@@ -43,7 +43,7 @@ public-api:
 
 # Naming Conventions
 naming:
-  - entities/**/: PascalCase
+  - entities/**/: cascalCase
   - features/**/: camelCase
   - shared/**/: camelCase
   - widgets/**/: PascalCase
@@ -59,3 +59,9 @@ types:
   - type file naming: '*.types.ts'
   - API response types: write in 'api/*.types.ts'
   - UI related types: write in 'model/types.ts'
+
+ # Export Rules
+  - All types must be named exports
+  - No default exports for types
+  - Group related types in same file
+  - Use explicit type exports in index.ts
