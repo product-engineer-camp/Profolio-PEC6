@@ -3,6 +3,10 @@ import type {
   ThemeListResponse,
   ThemeDetailResponse,
 } from "@/entities/themes/api/types";
+import type {
+  PostThemeRequest,
+  PostThemeResponse,
+} from "@/features/themes/api/types";
 
 // 임시 데모 데이터
 export const DEMO_THEMES: ThemeDetailResponse[] = [
@@ -205,4 +209,24 @@ export async function GET(request: NextRequest) {
   };
 
   return NextResponse.json(response);
+}
+
+export async function POST(request: Request) {
+  try {
+    const body: PostThemeRequest = await request.json();
+
+    // TODO: 실제 구현에서는 DB에 저장하는 로직이 들어갑니다
+    const mockResponse: PostThemeResponse = {
+      id: 3, // 임시 ID 생성
+      message: "테마가 성공적으로 생성되었습니다",
+    };
+
+    return NextResponse.json(mockResponse, { status: 201 });
+  } catch (error) {
+    console.error("Failed to create theme:", error);
+    return NextResponse.json(
+      { message: "Failed to create theme", code: "THEME_CREATE_ERROR" },
+      { status: 500 },
+    );
+  }
 }
