@@ -1,14 +1,13 @@
-import type { ThemeDetailResponseServer } from '../api/types';
-import type { ThemeDetailClient } from './types';
+import type { ThemeDetailResponse } from '../api/types';
+import { ThemeThumbnailCardProps } from '../ui/ThemeThumbnailCard';
 import { transformPatternToClassName } from './transformPatternToClassName';
 
 export const transformThemeDetailResponse = (
-  response: ThemeDetailResponseServer
-): ThemeDetailClient => {
+  response: ThemeDetailResponse
+): ThemeThumbnailCardProps => {
   return {
     id: response.id,
     colors: response.colors,
     pattern: transformPatternToClassName(response.pattern),
-    createdAt: response.createdAt,
   };
 }; 

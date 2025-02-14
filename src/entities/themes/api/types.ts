@@ -8,17 +8,17 @@ export const THEME_PATTERNS = [
   'square'
 ] as const;
 
-export type PatternTypeServer = typeof THEME_PATTERNS[number];
+export type ThemePattern = typeof THEME_PATTERNS[number];
 
-export type ThemeDetailResponseServer = {
+export type ThemeDetailResponse = {
   id: number;
   colors: string[];
-  pattern: PatternTypeServer;
+  pattern: ThemePattern;
   createdAt: string;
 };
 
-export type ThemeListResponseServer = {
-  themes: ThemeDetailResponseServer[];
+export type ThemeListResponse = {
+  themes: ThemeDetailResponse[];
   totalCount: number;
   currentPage: number;
 };

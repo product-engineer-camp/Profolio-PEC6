@@ -34,15 +34,14 @@ export const ThemeThumbnailList = () => {
     return <ErrorMessage message={error.message} />;
   }
 
-  if (!data || data.pages[0].themes.length === 0) {
+  if (!data || data.pages[0].length === 0) {
     return <ErrorMessage message="No themes found" />;
   }
-
   return (
     <div className="flex flex-col gap-4">
       {data.pages.map((page) =>
-        page.themes.map((theme) => (
-          <ThemeThumbnailCard key={theme.id} theme={theme} />
+        page.map((themeThumbnailCardProps) => (
+          <ThemeThumbnailCard key={themeThumbnailCardProps.id} {...themeThumbnailCardProps} />
         ))
       )}
       {hasNextPage && (

@@ -1,13 +1,9 @@
-import type { ThemeListResponseServer } from '../api/types';
-import type { ThemeListResponseClient } from './types';
+import type { ThemeListResponse } from '../api/types';
+import { ThemeThumbnailCardProps } from '../ui/ThemeThumbnailCard';
 import { transformThemeDetailResponse } from './transformThemeDetailResponse';
 
 export const transformThemeListResponse = (
-  response: ThemeListResponseServer
-): ThemeListResponseClient => {
-  return {
-    themes: response.themes.map(transformThemeDetailResponse),
-    totalCount: response.totalCount,
-    currentPage: response.currentPage,
-  };
+  response: ThemeListResponse
+): ThemeThumbnailCardProps[] => {
+  return response.themes.map(transformThemeDetailResponse);
 }; 

@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import type {
-  ThemeListResponseServer,
-  ThemeDetailResponseServer,
+  ThemeListResponse,
+  ThemeDetailResponse,
 } from "@/entities/themes/api/types";
 
 // 임시 데모 데이터
-export const DEMO_THEMES: ThemeDetailResponseServer[] = [
+export const DEMO_THEMES: ThemeDetailResponse[] = [
   {
     id: 1,
     colors: ["#FFB5B5", "#FFE2E2", "#F6F6F6", "#B5DEFF"], // 파스텔 핑크, 라이트 핑크, 화이트, 파스텔 블루
@@ -198,7 +198,7 @@ export async function GET(request: NextRequest) {
   const endIndex = startIndex + limit;
   const paginatedThemes = DEMO_THEMES.slice(startIndex, endIndex);
 
-  const response: ThemeListResponseServer = {
+  const response: ThemeListResponse = {
     themes: paginatedThemes,
     totalCount: DEMO_THEMES.length,
     currentPage: page,

@@ -1,15 +1,14 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import type { InfiniteData } from "@tanstack/react-query";
-import type { ThemeListResponseClient } from "./types";
-import type { ThemeListResponseServer } from "../api/types";
 import { getThemeList } from "../api/getThemeList";
 import { transformThemeListResponse } from "./transformThemeListResponse";
+import { ThemeThumbnailCardProps } from "../ui/ThemeThumbnailCard";
 
 const ITEMS_PER_PAGE = 12;
 
 type ThemeListQueryKey = readonly ["themeList"];
 type ThemeListQueryFnData = Awaited<ReturnType<typeof getThemeList>>;
-type ThemeListInfiniteData = InfiniteData<ThemeListResponseClient>;
+type ThemeListInfiniteData = InfiniteData<ThemeThumbnailCardProps[]>;
 
 export const useThemeList = () => {
   return useInfiniteQuery<

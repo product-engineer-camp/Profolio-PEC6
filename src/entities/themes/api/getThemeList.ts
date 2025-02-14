@@ -1,10 +1,10 @@
-import type { ThemeFilterOptionsClient } from "../model/types";
-import type { ThemeListResponseServer } from "./types";
+import { ThemeFilterOptions } from "../model/types";
+import type { ThemeListResponse } from "./types";
 
 export const getThemeList = async ({
   page = 1,
   limit = 12,
-}: ThemeFilterOptionsClient = {}): Promise<ThemeListResponseServer> => {
+}: ThemeFilterOptions = {}): Promise<ThemeListResponse> => {
   const searchParams = new URLSearchParams();
   
   searchParams.append("page", page.toString());

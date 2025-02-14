@@ -2,17 +2,16 @@
  * 테마목록 , 테마수정하기 -> 테마 썸네일 카드
  */
 
-import type { ThemeDetailClient } from '../model/types';
 import { adjustColor } from '../lib/adjustColor';
 
-type ThemeThumbnailCardProps = {
-  theme: ThemeDetailClient;
+export type ThemeThumbnailCardProps = {
+  id : number;
+  colors: string[];
+  pattern: string;
 };
 
-export const ThemeThumbnailCard = ({ theme }: ThemeThumbnailCardProps) => {
-  const { colors, pattern } = theme;
-  
-  return (
+export const ThemeThumbnailCard = ({ colors, pattern }: ThemeThumbnailCardProps) => {
+    return (
     <div className="relative w-full aspect-video rounded-lg overflow-hidden">
       <div className="w-full h-full">
         <div 
