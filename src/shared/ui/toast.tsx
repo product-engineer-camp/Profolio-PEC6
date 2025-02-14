@@ -1,4 +1,3 @@
-- copy api를 별도로 두는 것.
-  - 이게 정말 프론트에서 필요한 로직인가? 
-  
-- 생성API를 재사용 하는 것. 
+export function Toast() {
+  return <div>Toast</div>;
+}
