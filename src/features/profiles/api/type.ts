@@ -17,9 +17,9 @@ export type GetProfiles = ApiResponse<{
   last: boolean;
 }>;
 
-export type CreateProfileRequest = Profile;
-export type CreateProfileResponse = ApiResponse<null>;
+export type PostProfileRequest = Profile;
+export type PostProfileResponse = ApiResponse<null>;
 
 export type DeleteProfileResponse = ApiResponse<null>;
 
-export type UpdateProfileResponse = ApiResponse<null>;
+export type PutProfileResponse = ApiResponse<null>;
