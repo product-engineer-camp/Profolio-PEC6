@@ -1,22 +1,10 @@
-import type { ThemeKeyword, ThemeKeywordsResponse } from "../api/types";
+import type { ThemeKeyword } from "../api/types";
+import { KeywordCategory } from "./types";
 
-type TransformedKeywords = {
-  moodKeywords: ThemeKeyword[];
-  patternKeywords: ThemeKeyword[];
-};
-
-export const transformKeywords = (
-  response: ThemeKeywordsResponse,
-): TransformedKeywords => {
-  return response.keywords.reduce<TransformedKeywords>(
-    (acc, keyword) => {
-      if (keyword.category === "mood") {
-        acc.moodKeywords.push(keyword);
-      } else {
-        acc.patternKeywords.push(keyword);
-      }
-      return acc;
-    },
-    { moodKeywords: [], patternKeywords: [] },
-  );
+export const filterKeywordsByCategory = (
+  keywords: ThemeKeyword[] | undefined,
+  category: KeywordCategory,
+): ThemeKeyword[] => {
+  if (!keywords) return [];
+  return keywords.filter((keyword) => keyword.category === category);
 };

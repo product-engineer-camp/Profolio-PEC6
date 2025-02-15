@@ -1,12 +1,9 @@
-export const KEYWORD_CATEGORIES = [
-  {
-    category: "mood" as const,
-    title: "분위기",
-    selectedClassName: "bg-pink-200 text-pink-800",
-  },
-  {
-    category: "pattern" as const,
-    title: "패턴",
-    selectedClassName: "bg-purple-200 text-purple-800",
-  },
-];
+export const KEYWORD_CATEGORY = {
+  MOOD: "mood",
+  PATTERN: "pattern",
+} as const;
+
+export const KEYWORD_CATEGORY_LABEL = {
+  [KEYWORD_CATEGORY.MOOD]: "분위기",
+  [KEYWORD_CATEGORY.PATTERN]: "패턴",
+} as const;

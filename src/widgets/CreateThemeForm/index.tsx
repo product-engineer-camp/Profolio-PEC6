@@ -8,22 +8,33 @@ import { useThemeKeywords } from "@/entities/themes/model/useThemeKeywords";
 import { KeywordTagSection } from "@/entities/themes/ui/KeywordTagSection";
 import { CreateThemeButton } from "@/features/themes/ui/CreateThemeButton";
 import type { ThemeKeyword } from "@/entities/themes/api/types";
+import { filterKeywordsByCategory } from "@/entities/themes/model/transformKeywords";
 import {
-  getKeywordsByCategory,
-  getSelectedKeywordsByCategory,
-} from "@/entities/themes/lib/keywordByCategory";
-import { KEYWORD_CATEGORIES } from "@/entities/themes/constants/keyword";
+  KEYWORD_CATEGORY,
+  KEYWORD_CATEGORY_LABEL,
+} from "@/entities/themes/constants/keyword";
+
 export const CreateThemeForm = () => {
   const { data, isLoading } = useThemeKeywords();
   const [selectedKeywords, setSelectedKeywords] = useState<ThemeKeyword[]>([]);
 
-  const keywordsByCategory = useMemo(
-    () => getKeywordsByCategory(data?.keywords),
+  const moodKeywords = useMemo(
+    () => filterKeywordsByCategory(data?.keywords, KEYWORD_CATEGORY.MOOD),
     [data?.keywords],
   );
 
-  const selectedKeywordsByCategory = useMemo(
-    () => getSelectedKeywordsByCategory(selectedKeywords),
+  const patternKeywords = useMemo(
+    () => filterKeywordsByCategory(data?.keywords, KEYWORD_CATEGORY.PATTERN),
+    [data?.keywords],
+  );
+
+  const selectedMoodKeywords = useMemo(
+    () => filterKeywordsByCategory(selectedKeywords, KEYWORD_CATEGORY.MOOD),
+    [selectedKeywords],
+  );
+
+  const selectedPatternKeywords = useMemo(
+    () => filterKeywordsByCategory(selectedKeywords, KEYWORD_CATEGORY.PATTERN),
     [selectedKeywords],
   );
 
@@ -40,20 +51,24 @@ export const CreateThemeForm = () => {
 
   return (
     <form className="space-y-8">
-      {KEYWORD_CATEGORIES.map(({ category, title, selectedClassName }) => (
-        <KeywordTagSection
-          key={category}
-          title={title}
-          keywords={keywordsByCategory[category]}
-          selectedKeywords={selectedKeywordsByCategory[category]}
-          onKeywordClick={handleKeywordClick}
-          selectedClassName={selectedClassName}
-        />
-      ))}
+      <KeywordTagSection
+        title={KEYWORD_CATEGORY_LABEL[KEYWORD_CATEGORY.MOOD]}
+        keywords={moodKeywords}
+        selectedKeywords={selectedMoodKeywords}
+        onKeywordClick={handleKeywordClick}
+        selectedClassName="bg-pink-200 text-pink-800"
+      />
+      <KeywordTagSection
+        title={KEYWORD_CATEGORY_LABEL[KEYWORD_CATEGORY.PATTERN]}
+        keywords={patternKeywords}
+        selectedKeywords={selectedPatternKeywords}
+        onKeywordClick={handleKeywordClick}
+        selectedClassName="bg-purple-200 text-purple-800"
+      />
       <div className="flex justify-center">
         <CreateThemeButton
-          selectedMoodKeywords={selectedKeywordsByCategory.mood}
-          selectedPatternKeywords={selectedKeywordsByCategory.pattern}
+          selectedMoodKeywords={selectedMoodKeywords}
+          selectedPatternKeywords={selectedPatternKeywords}
           className="mt-4"
         />
       </div>
