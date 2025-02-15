@@ -17,6 +17,14 @@ segments:
   - lib       # 유틸리티 함수
   - constants # 상수
 
+# Widget Rules
+widget-rules:
+  - All widget code must be in 'index.tsx'
+  - No additional files or directories within widget
+  - Directory name must be PascalCase
+  - Directory structure: widgets/PascalCase/index.tsx
+  - No nested components in separate files
+
 # Import Rules
 rules:
   # 상위 레이어는 하위 레이어만 import 가능
@@ -43,7 +51,7 @@ public-api:
 
 # Naming Conventions
 naming:
-  - entities/**/: cascalCase
+  - entities/**/: camelCase
   - features/**/: camelCase
   - shared/**/: camelCase
   - widgets/**/: PascalCase
