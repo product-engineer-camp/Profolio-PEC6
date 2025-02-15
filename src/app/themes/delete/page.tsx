@@ -15,7 +15,7 @@
 
 import { ThemeListHeader } from "@/widgets/ThemeListHeader";
 import { ThemeThumbnailListWithCheckbox } from "@/features/themes/ui/ThemeThumbnailListWithCheckbox";
-import { CheckedThemesProvider } from "@/features/themes/model/CheckedThemeContext";
+import { CheckedThemesProvider } from "@/src/features/themes/lib/CheckedThemeContext";
 
 export default function ThemeDeletePage() {
   return (

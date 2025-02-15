@@ -1,6 +1,6 @@
 import { Button } from "@/shared/ui/button";
 import { useThemeListHeaderNavigation } from "../model/useThemeListHeaderNavigation";
-import { useCheckedThemes } from "../model/CheckedThemeContext";
+import { useCheckedThemes } from "../lib/CheckedThemeContext";
 import { useDeleteThemes } from "../model/useDeleteThemes";
 
 export const DeleteThemeListActionHeader = () => {
