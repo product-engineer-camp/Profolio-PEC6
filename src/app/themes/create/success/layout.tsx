@@ -3,7 +3,11 @@ export default function CreateThemeSuccessLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <main className="mx-auto flex flex-col justify-center gap-[100px] px-4 py-8">
+      {children}
+    </main>
+  );
 }
 
 export const metadata = {
