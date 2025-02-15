@@ -31,24 +31,6 @@ export default function RootLayout({
           </nav>
 
           {children}
-
-          <footer className="flex w-full justify-center border-t border-t-foreground/10 p-4 text-center text-xs">
-            <div className="text-left text-stone-400">
-              <div>상호명: 마중물 | 대표: 황경찬</div>
-              <div>사업자등록번호: 264-01-01901</div>
-              <div>정보통신업 주소: 경기도 광주시 회안대로 350-23</div>
-              <div>문의: 010 5056 2412</div>
-              <div className="flex justify-between">
-                <ExternalLink href="https://slashpage.com/pec/terms-of-use">
-                  이용약관
-                </ExternalLink>
-                <ExternalLink href="https://slashpage.com/pec/privacy-policy">
-                  개인정보 처리방침
-                </ExternalLink>
-              </div>
-              Copyright© PEC
-            </div>
-          </footer>
         </main>
       </body>
     </html>
