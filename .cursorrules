@@ -1,0 +1,224 @@
+# Next.js 및 FSD 아키텍처 규칙
+rules:
+  # 기술 스택 정의
+  stack:
+    framework:
+      - TypeScript
+      - Node.js
+      - Next.js App Router
+      - React
+      - Shadcn UI
+      - Tailwind
+
+  # 코딩 컨벤션
+  conventions:
+    core:
+      - description: "정확한 예제가 포함된 간결한 TypeScript 코드 작성"
+      - description: "함수형 및 선언적 프로그래밍 패턴 사용"
+      - description: "반복(iteration)과 모듈화 선호"
+      - description: "설명적인 변수명 사용 (예: isLoading, hasError)"
+
+    typescript:
+      - description: "타입 선호 (인터페이스 대신)"
+      - description: "맵 사용 (enum 대신)"
+      - description: "함수형 컴포넌트에 TypeScript 타입 사용"
+
+    components:
+      - description: "named export 사용"
+      - description: "순수 함수는 function 키워드 사용"
+      - description: "선언적 JSX 사용"
+      - description: "구체적이고 명확한 컴포넌트 이름 사용"
+      - description: "'Item'과 같은 모호한 이름 대신 구체적인 이름 사용 (예: ProductCard, UserListRow, CommentBox)"
+
+    styling:
+      - description: "Shadcn UI 및 Tailwind 사용"
+      - description: "모바일 우선 반응형 디자인"
+
+    optimization:
+      - description: "React Server Components (RSC) 선호"
+      - description: "use client 최소화"
+      - description: "Suspense와 fallback 사용"
+      - description: "WebP 이미지 포맷 및 lazy loading 구현"
+
+  # 아키텍처 레이어 규칙
+  layers:
+    # App Layer
+    - pattern: src/app/**/*
+      allowed:
+        - src/widgets/**/*
+        - src/features/**/*
+        - src/entities/**/*
+        - src/shared/**/*
+      denied:
+        - src/app/**/*
+
+    # Widgets Layer
+    - pattern: src/widgets/**/*
+      allowed:
+        - src/features/**/*
+        - src/entities/**/*
+        - src/shared/**/*
+      denied:
+        - src/widgets/**/*
+
+    # Features Layer
+    - pattern: src/features/**/*
+      allowed:
+        - src/entities/**/*
+        - src/shared/**/*
+      denied:
+        - src/features/**/*
+
+    # Entities Layer
+    - pattern: src/entities/**/*
+      allowed:
+        - src/shared/**/*
+        - src/entities/**/model/**/*
+        - src/entities/**/@x/**/*
+      denied:
+        - src/entities/**/*
+
+    # Shared Layer
+    - pattern: src/shared/**/*
+      allowed:
+        - src/shared/**/*
+
+  # 세그먼트 규칙
+  segments:
+    - pattern: src/**/ui/**/*
+      allowed:
+        - "**/model/**/*"
+        - "**/lib/**/*"
+        - "**/config/**/*"
+        - src/shared/**/*
+
+    - pattern: src/**/api/**/*
+      allowed:
+        - "**/model/**/*"
+        - "**/lib/**/*"
+        - "**/config/**/*"
+        - src/shared/**/*
+
+    - pattern: src/**/model/**/*
+      allowed:
+        - "**/lib/**/*"
+        - "**/config/**/*"
+        - src/shared/**/*
+
+  # API 규칙
+  api:
+    - pattern: src/**/index.ts
+      type: PUBLIC_API
+
+    - pattern: src/**/@x/**/index.ts
+      type: CROSS_IMPORT_API
+
+  # 테스트 파일 예외
+  tests:
+    - pattern: src/**/*.test.{ts,tsx}
+      allowed:
+        - "**/*"
+
+    - pattern: src/**/*.stories.{ts,tsx}
+      allowed:
+        - "**/*"
+
+# 무시할 패턴
+ignore:
+  - "**/node_modules/**"
+  - "**/dist/**"
+  - "**/build/**"
+  - "**/.next/**"
+  - "**/coverage/**"
+
+# 위젯 구조 규칙
+widget_structure:
+  - pattern: src/widgets/*
+    rules:
+      - description: "위젯은 기본적으로 단일 컴포넌트 구조 사용"
+      - description: "슬라이스 없이 직접 컴포넌트 정의 (예: widgets/Header/index.tsx)"
+      - description: "비즈니스 로직은 features에서 import"
+      - description: "필요한 경우에만 내부 segment 사용 가능"
+    structure:
+      allowed:
+        - "index.tsx"
+        - "ui/**/*" # 선택적 UI segment
+        - "lib/**/*" # 선택적 유틸리티
+        - "config/**/*" # 선택적 설정
+      examples:
+        correct:
+          - "widgets/Header/index.tsx"
+          - "widgets/Sidebar/index.tsx"
+          - "widgets/Footer/index.tsx"
+        incorrect:
+          - "widgets/auth/logins/index.tsx" # 슬라이스는 복수형, segment는 단수형
+          - "widgets/Header/model/index.ts" # 비즈니스 로직은 features에서 가져오기
+
+# 위젯 구현 가이드라인
+widget_implementation:
+  - rules:
+      - description: "비즈니스 로직은 features에서 import"
+      - description: "상태 관리는 features layer에 위임"
+      - description: "UI 조합에 집중"
+    example: |
+      // widgets/Header/index.tsx
+      import { AuthButton } from '@/features/auth'
+      import { SearchBar } from '@/features/search'
+      import { Logo } from '@/shared/ui'
+
+      export function Header() {
+        return (
+          <header>
+            <Logo />
+            <SearchBar />
+            <AuthButton />
+          </header>
+        )
+      }
+
+# API 구조 및 네이밍 규칙
+api_structure:
+  - pattern: src/**/api/**/*
+    rules:
+      - description: "하나의 API 엔드포인트는 하나의 파일로 구현"
+      - description: "HTTP 메서드를 파일명 접두어로 사용"
+      - description: "RESTful 네이밍 컨벤션 준수 (단수형)"
+      - description: "API 관련 타입은 type.ts에 정의"
+    structure:
+      naming:
+        pattern: "[Method][ResourceName]"
+        methods:
+          - "Get"
+          - "Post"
+          - "Put"
+          - "Delete"
+      files:
+        - "type.ts"              # API 관련 타입 정의
+        - "[Method][Resource].ts"  # API 구현 파일
+      examples:
+        correct:
+          - "GetUser.ts"          # 단수형 사용
+          - "PostUser.ts"
+          - "PutUser.ts"
+          - "DeleteUser.ts"
+          - "GetUserList.ts"      # 목록 조회는 List 접미어 사용
+          - "GetUserPost.ts"      # 관계된 리소스도 단수형
+        incorrect:
+          - "getUsers.ts"         # 카멜케이스 사용
+          - "User.ts"             # HTTP 메서드 누락
+          - "CreateUser.ts"       # 잘못된 접두어
+          - "UserAPI.ts"          # 잘못된 네이밍
+
+  # API 폴더 구조 예시
+  api_folder_structure:
+    example: |
+      src/
+        entities/
+          user/
+            api/
+              type.ts            # API 관련 타입 정의
+              GetUser.ts
+              GetUserList.ts
+              PostUser.ts
+              PutUser.ts
+              DeleteUser.ts
