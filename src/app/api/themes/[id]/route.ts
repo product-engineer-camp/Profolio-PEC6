@@ -34,3 +34,33 @@ export async function GET(request: NextRequest, { params }: Props) {
     );
   }
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id: string } },
+) {
+  try {
+    const themeId = Number(params.id);
+
+    // DEMO_THEMES에서 해당 ID의 테마 찾기
+    const themeIndex = DEMO_THEMES.findIndex((theme) => theme.id === themeId);
+
+    if (themeIndex === -1) {
+      return NextResponse.json({ error: "Theme not found" }, { status: 404 });
+    }
+
+    // 테마 삭제 (실제로는 DEMO_THEMES가 상수이므로 삭제되지 않습니다)
+    DEMO_THEMES.splice(themeIndex, 1);
+
+    return NextResponse.json(
+      { message: "Theme deleted successfully" },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Failed to delete theme:", error);
+    return NextResponse.json(
+      { error: "Failed to delete theme" },
+      { status: 500 },
+    );
+  }
+}
