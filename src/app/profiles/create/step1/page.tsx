@@ -1,6 +1,6 @@
 "use client";
 import { useContext } from "react";
-import { BasicQAStep } from "@/features/profile/ui/BasicQAStep";
+import { BasicQAStep } from "@/src/features/profiles/ui/BasicQAStep";
 import { ProfileCreateContext } from "../_model/context";
 
 export default function Step1Page() {

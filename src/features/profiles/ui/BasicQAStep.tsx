@@ -1,11 +1,10 @@
 "use client";
-import { Question } from "@/entities/profile/model/question.type";
 import { BasicQAStepProps } from "../model/basicQA.types";
 import { useBasicQAStep } from "../model/useBasicQAStep";
 import { useBasicQuestions } from "../model/useBasicQuestions";
 import { Button } from "@/shared/ui/button";
-import { TextInput, SelectInput, NumberInput } from "./inputs";
-import { ProgressBar } from "@/src/shared/ui/ProgressBar";
+import { ProgressBar } from "@/shared/ui/ProgressBar";
+import { QuestionInput } from "./QuestionInput";
 
 export const BasicQAStep = ({
   onComplete,
@@ -19,26 +18,6 @@ export const BasicQAStep = ({
   const { data, isLoading } = useBasicQuestions();
   const questions = data?.questions || [];
   const currentQuestion = questions[currentQuestionIndex];
-
-  const renderInput = (question: Question) => {
-    const value = answers[question.id];
-    const inputProps = {
-      value,
-      onChange: handleAnswer,
-      question,
-    };
-
-    switch (question.type) {
-      case "text":
-        return <TextInput {...inputProps} />;
-      case "select":
-        return <SelectInput {...inputProps} />;
-      case "number":
-        return <NumberInput {...inputProps} />;
-      default:
-        return null;
-    }
-  };
 
   if (isLoading) {
     return <div className="text-center">질문을 불러오는 중...</div>;
@@ -54,7 +33,13 @@ export const BasicQAStep = ({
 
       <div className="w-full space-y-4">
         <h2 className="text-xl font-semibold">{currentQuestion.question}</h2>
-        <div className="w-full space-y-4">{renderInput(currentQuestion)}</div>
+        <div className="w-full space-y-4">
+          <QuestionInput
+            question={currentQuestion}
+            value={answers[currentQuestion.id]}
+            onChange={handleAnswer}
+          />
+        </div>
       </div>
 
       <div className="flex gap-4">
