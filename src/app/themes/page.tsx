@@ -12,11 +12,13 @@
 "use client";
 
 import { ThemeThumbnailList } from "@/entities/themes/ui/ThemeThumbnailList";
+import { ThemeListHeader } from "@/widgets/ThemeListHeader";
 
-export default function ThemesPage() {
+export default function ThemeListPage() {
   return (
-    <main className="container mx-auto px-4 py-8">
+    <>
+      <ThemeListHeader variant="default" />
       <ThemeThumbnailList />
-    </main>
+    </>
   );
 }
