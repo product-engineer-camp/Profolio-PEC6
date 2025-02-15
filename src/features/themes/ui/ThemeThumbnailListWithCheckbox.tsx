@@ -5,7 +5,7 @@ import { ThemeThumbnailCard } from "@/entities/themes/ui/ThemeThumbnailCard";
 import { LoadingSpinner } from "@/shared/ui/LoadingSpinner";
 import { ErrorMessage } from "@/shared/ui/ErrorMessage";
 import { Checkbox } from "@/shared/ui/checkbox";
-import { useCheckedThemes } from "../model/useCheckedThemes";
+import { useCheckedThemes } from "../model/CheckedThemeContext";
 
 export const ThemeThumbnailListWithCheckbox = () => {
   const { checkedThemeIds, toggleThemeSelection } = useCheckedThemes();
