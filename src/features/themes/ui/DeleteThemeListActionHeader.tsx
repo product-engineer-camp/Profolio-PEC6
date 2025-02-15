@@ -1,12 +1,10 @@
 import { Button } from "@/shared/ui/button";
 import { Trash } from "lucide-react";
-import { useThemeListHeaderNavigation } from "../model/useThemeListHeaderNavigation";
 import { deleteTheme } from "../api/deleteTheme";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export const DeleteThemeListActionHeader = () => {
-  const { navigateBack, navigateToThemeList, refreshPage } =
-    useThemeListHeaderNavigation();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const themeId = searchParams.get("id");
 
@@ -15,8 +13,7 @@ export const DeleteThemeListActionHeader = () => {
 
     try {
       await deleteTheme(Number(themeId));
-      navigateToThemeList();
-      refreshPage();
+      router.push("/themes");
     } catch (error) {
       console.error("Failed to delete theme:", error);
     }
@@ -26,7 +23,7 @@ export const DeleteThemeListActionHeader = () => {
     <>
       <Button
         variant="ghost"
-        onClick={navigateBack}
+        onClick={() => router.push("/themes")}
         className="text-xl font-bold text-black hover:text-black/80"
       >
         완료
