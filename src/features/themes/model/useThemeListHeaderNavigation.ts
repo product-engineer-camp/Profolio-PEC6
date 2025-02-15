@@ -11,6 +11,9 @@ export const useThemeListHeaderNavigation = () => {
     router.push("/themes");
   };
 
+  const navigateToThemeCreate = () => {
+    router.push("/themes/create");
+  };
   const navigateBack = () => {
     router.back();
   };
@@ -22,6 +25,7 @@ export const useThemeListHeaderNavigation = () => {
   return {
     navigateToDelete,
     navigateToThemeList,
+    navigateToThemeCreate,
     navigateBack,
     refreshPage,
   };
