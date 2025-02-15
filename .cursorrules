@@ -43,7 +43,7 @@ public-api:
 
 # Naming Conventions
 naming:
-  - entities/**/: cascalCase
+  - entities/**/: camelCase
   - features/**/: camelCase
   - shared/**/: camelCase
   - widgets/**/: PascalCase
