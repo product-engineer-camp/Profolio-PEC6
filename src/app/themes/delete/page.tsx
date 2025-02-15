@@ -14,12 +14,14 @@
 "use client";
 
 import { ThemeListHeader } from "@/widgets/ThemeListHeader";
+import { ThemeThumbnailListWithCheckbox } from "@/features/themes/ui/ThemeThumbnailListWithCheckbox";
+import { CheckedThemesProvider } from "@/features/themes/model/CheckedThemeContext";
 
 export default function ThemeDeletePage() {
   return (
-    <>
+    <CheckedThemesProvider>
       <ThemeListHeader variant="delete" />
-      {/* ... 나머지 컴포넌트들 */}
-    </>
+      <ThemeThumbnailListWithCheckbox />
+    </CheckedThemesProvider>
   );
 }
