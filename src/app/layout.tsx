@@ -3,6 +3,8 @@ import AuthButton from "@/features/auth/ui/AuthButton";
 import { ExternalLink } from "@/shared/ui/ExternalLink";
 import "@/application/globals.css";
 import { Logo } from "@/shared/ui/Logo";
+import Link from "next/link";
+import { QueryProvider } from "./_providers/QueryProvider";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -22,16 +24,20 @@ export default function RootLayout({
   return (
     <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground">
-        <main className="flex min-h-screen flex-col items-center">
-          <nav className="flex h-16 w-full justify-center border-b border-b-foreground/10">
-            <div className="flex w-full max-w-5xl items-center justify-between px-4 text-sm">
-              <Logo />
-              <AuthButton />
-            </div>
-          </nav>
+        <QueryProvider>
+          <main className="flex min-h-screen flex-col items-center">
+            <nav className="flex h-16 w-full justify-center border-b border-b-foreground/10">
+              <div className="flex w-full max-w-5xl items-center justify-between px-4 text-sm">
+                <Link href="/">
+                  <Logo />
+                </Link>
+                <AuthButton />
+              </div>
+            </nav>
 
-          {children}
-        </main>
+            {children}
+          </main>
+        </QueryProvider>
       </body>
     </html>
   );
