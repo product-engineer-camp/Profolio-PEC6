@@ -230,3 +230,36 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    const { themeIds } = await request.json();
+
+    // DEMO_THEMES에서 해당 ID들의 테마 찾기
+    const themeIndexes = themeIds
+      .map((id: number) => DEMO_THEMES.findIndex((theme) => theme.id === id))
+      .filter((index: number) => index !== -1);
+
+    if (themeIndexes.length === 0) {
+      return NextResponse.json({ error: "Themes not found" }, { status: 404 });
+    }
+
+    // 테마들 삭제 (높은 인덱스부터 삭제해야 인덱스가 밀리지 않음)
+    themeIndexes
+      .sort((a: number, b: number) => b - a)
+      .forEach((index: number) => {
+        DEMO_THEMES.splice(index, 1);
+      });
+
+    return NextResponse.json(
+      { message: "Themes deleted successfully" },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Failed to delete themes:", error);
+    return NextResponse.json(
+      { error: "Failed to delete themes" },
+      { status: 500 },
+    );
+  }
+}
