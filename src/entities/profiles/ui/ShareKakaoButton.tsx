@@ -12,16 +12,16 @@ export function ShareKakaoButton({ profileUrl }: ShareKakaoButtonProps) {
     <Button
       variant="ghost"
       size="sm"
-      className="flex items-center gap-2 bg-[#FEE500] px-4 transition-colors"
+      className="flex w-full items-center justify-center gap-1.5 bg-[#FEE500] px-2 text-xs transition-colors hover:bg-[#FDD800] sm:gap-2 sm:px-4 sm:text-sm"
     >
       <Image
         src="/kakao.svg"
         alt="카카오 공유하기"
         width={20}
         height={20}
-        className="h-5 w-5"
+        className="h-4 w-4 shrink-0 sm:h-5 sm:w-5"
       />
-      <span className="text-sm">카카오로 공유하기</span>
+      <span className="truncate text-xs sm:text-sm">카카오 공유</span>
     </Button>
   );
 }
