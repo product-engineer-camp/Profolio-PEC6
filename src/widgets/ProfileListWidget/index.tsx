@@ -3,73 +3,54 @@
 import { ProfileList } from "@/features/profiles/ui/ProfileList";
 import { ProfileSortingDropdownMenu } from "@/features/profiles/ui/ProfileSortingDropdownMenu";
 import { SortOption } from "@/features/profiles/model/type";
-import { useState } from "react";
-import type { Profile } from "@/entities/profiles/model/type";
-import { toast } from "sonner";
-
-// 가짜 데이터 추가
-const MOCK_PROFILES: Profile[] = [
-  {
-    id: 1,
-    title: "프론트엔드 개발자",
-    content: "프론트엔드 개발자입니다.",
-    theme: "light",
-    profileUrl: "https://example.com/profile1",
-    createdAt: "2024-03-20T00:00:00.000Z",
-    updatedAt: "2024-03-20T00:00:00.000Z",
-  },
-  {
-    id: 2,
-    title: "백엔드 개발자",
-    content: "백엔드 개발자입니다.",
-    theme: "dark",
-    profileUrl: "https://example.com/profile2",
-    createdAt: "2024-03-20T00:00:00.000Z",
-    updatedAt: "2024-03-20T00:00:00.000Z",
-  },
-  {
-    id: 3,
-    title: "풀스택 개발자",
-    content: "풀스택 개발자입니다.",
-    theme: "light",
-    profileUrl: "https://example.com/profile3",
-    createdAt: "2024-03-20T00:00:00.000Z",
-    updatedAt: "2024-03-20T00:00:00.000Z",
-  },
-];
+import { useState, useEffect, useCallback } from "react";
+import { getProfileList } from "@/features/profiles/api/getProfileList";
+import { Profile } from "@/entities/profiles/model/type";
+import { useInfiniteScroll } from "@/shared/lib/useInfiniteScroll";
 
 export function ProfileListWidget() {
   const [currentSort, setCurrentSort] = useState<SortOption>("latest");
-  const [profiles, setProfiles] = useState<Profile[]>(MOCK_PROFILES);
   const [isLoading, setIsLoading] = useState(false);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-  const handleSort = async (option: SortOption) => {
+  const loadMoreProfiles = useCallback(async () => {
+    if (isLoading || !hasMore) return;
+
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      setCurrentSort(option);
+      const newProfiles = await getProfileList(page, currentSort);
 
-      // 가짜 데이터 정렬 로직
-      const sortedProfiles = [...MOCK_PROFILES].sort((a, b) => {
-        if (option === "latest") {
-          return (
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-        } else if (option === "shares") {
-          return -1;
-        }
-        return 0;
-      });
+      if (newProfiles.length === 0) {
+        setHasMore(false);
+        return;
+      }
 
-      // 로딩 효과를 위한 인위적인 지연
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      setProfiles(sortedProfiles);
-    } catch (error) {
-      toast.error("프로필 목록을 불러오는데 실패했습니다.");
-      console.error(error);
+      setProfiles((prev) => [...prev, ...newProfiles]);
+      setPage((prev) => prev + 1);
+      console.log("loadMore", page);
     } finally {
       setIsLoading(false);
     }
+  }, [page, currentSort, isLoading, hasMore]);
+
+  // 무한 스크롤 훅 사용
+  const { containerRef } = useInfiniteScroll({
+    onIntersect: loadMoreProfiles,
+    threshold: 0.5,
+  });
+
+  // 정렬 옵션이 변경될 때 프로필 목록 초기화
+  useEffect(() => {
+    setProfiles([]);
+    setPage(1);
+    setHasMore(true);
+    loadMoreProfiles();
+  }, [currentSort]);
+
+  const handleSort = (option: SortOption) => {
+    setCurrentSort(option);
   };
 
   return (
@@ -82,6 +63,12 @@ export function ProfileListWidget() {
         />
       </div>
       <ProfileList profiles={profiles} />
+      <div ref={containerRef} />
+      {isLoading && (
+        <div className="flex justify-center py-4">
+          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900" />
+        </div>
+      )}
     </div>
   );
 }
