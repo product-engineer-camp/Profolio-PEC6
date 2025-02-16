@@ -1,12 +1,7 @@
 "use client";
 
 import { ProfileThumbnailCard } from "@/entities/profiles/ui/ProfileThumbnailCard";
-import type { ProfileList } from "@/features/profiles/model/type";
-type Profile = {
-  id: string;
-  title: string;
-  modifiedDate: string;
-};
+import type { Profile } from "@/entities/profiles/model/type";
 
 type ProfileListProps = {
   profiles: Profile[];
@@ -19,8 +14,9 @@ export function ProfileList({ profiles }: ProfileListProps) {
         <ProfileThumbnailCard
           key={profile.id}
           title={profile.title}
-          modifiedDate={profile.modifiedDate}
+          modifiedDate={profile.updatedAt}
           profileId={profile.id}
+          profileUrl={profile.profileUrl}
         />
       ))}
     </div>
