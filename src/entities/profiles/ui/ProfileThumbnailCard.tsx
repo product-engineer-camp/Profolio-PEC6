@@ -14,7 +14,7 @@ import { ShareQRCodeButton } from "./ShareQRCodeButton";
 type ProfileThumbnailCardProps = {
   title: string;
   modifiedDate: string;
-  profileId: string;
+  profileId: number;
   profileUrl: string;
 };
 
