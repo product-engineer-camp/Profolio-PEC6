@@ -1,10 +1,16 @@
 "use client";
-import { BasicQAStepProps } from "../model/basicQA.types";
 import { useBasicQAStep } from "../model/useBasicQAStep";
-import { useBasicQuestions } from "../model/useBasicQuestions";
 import { Button } from "@/shared/ui/button";
 import { ProgressBar } from "@/shared/ui/ProgressBar";
 import { QuestionInput } from "./QuestionInput";
+
+import { useBasicQuestions } from "../model/useBasicQuestions";
+import { BasicQAAnswers } from "../model/profile.type";
+
+type BasicQAStepProps = {
+  onComplete: (answers: BasicQAAnswers) => void;
+  initialAnswers?: BasicQAAnswers;
+};
 
 export const BasicQAStep = ({
   onComplete,

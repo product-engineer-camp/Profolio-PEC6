@@ -1,6 +1,17 @@
 import { useState } from "react";
 import { useBasicQuestions } from "./useBasicQuestions";
-import { BasicQAAnswers, BasicQAState, BasicQAActions } from "./basicQA.types";
+import { BasicQAAnswers } from "./profile.type";
+
+type BasicQAState = {
+  currentQuestionIndex: number;
+  answers: BasicQAAnswers;
+};
+
+type BasicQAActions = {
+  handleAnswer: (questionId: string, answer: any) => void;
+  handleNext: () => void;
+  handlePrevious: () => void;
+};
 
 export const useBasicQAStep = (
   onComplete: (answers: BasicQAAnswers) => void,
