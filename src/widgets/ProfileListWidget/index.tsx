@@ -7,6 +7,7 @@ import { useState, useEffect, useCallback } from "react";
 import { getProfileList } from "@/features/profiles/api/getProfileList";
 import { Profile } from "@/entities/profiles/model/type";
 import { useInfiniteScroll } from "@/shared/lib/useInfiniteScroll";
+import { LoadingSpinner } from "@/shared/ui/loading-spinner";
 
 export function ProfileListWidget() {
   const [currentSort, setCurrentSort] = useState<SortOption>("latest");
@@ -64,11 +65,7 @@ export function ProfileListWidget() {
       </div>
       <ProfileList profiles={profiles} />
       <div ref={containerRef} />
-      {isLoading && (
-        <div className="flex justify-center py-4">
-          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900" />
-        </div>
-      )}
+      {isLoading && <LoadingSpinner />}
     </div>
   );
 }
