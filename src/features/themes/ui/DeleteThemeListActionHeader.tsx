@@ -1,19 +1,19 @@
 import { Button } from "@/shared/ui/button";
-import { useThemeListHeaderNavigation } from "../model/useThemeListHeaderNavigation";
 import { useCheckedThemes } from "../lib/CheckedThemeContext";
 import { useDeleteThemes } from "../model/useDeleteThemes";
 
+import { useRouter } from "next/navigation";
+
 export const DeleteThemeListActionHeader = () => {
-  const { navigateBack, navigateToThemeList } = useThemeListHeaderNavigation();
+  const router = useRouter();
   const { hasCheckedThemes, checkedThemeIds, clearCheckedThemes } =
     useCheckedThemes();
   const { deleteThemes } = useDeleteThemes({
     onSuccess: () => {
       clearCheckedThemes();
-      navigateToThemeList();
+      router.push("/themes");
     },
   });
-
   const handleDelete = async () => {
     if (!hasCheckedThemes) return;
 
@@ -29,8 +29,8 @@ export const DeleteThemeListActionHeader = () => {
     <>
       <Button
         variant="ghost"
-        onClick={navigateBack}
-        className="p-0 text-xl font-bold text-black hover:text-black/80"
+        onClick={() => router.push("/themes")}
+        className="text-xl font-bold text-black hover:text-black/80"
       >
         완료
       </Button>

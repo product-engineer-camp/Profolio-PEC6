@@ -5,11 +5,10 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/ui/dropdown-menu";
 import { Button } from "@/shared/ui/button";
-import { MoreHorizontal, Trash } from "lucide-react";
-import { useThemeListHeaderNavigation } from "../model/useThemeListHeaderNavigation";
-
+import { MoreHorizontal, Plus, Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
 export const DefaultThemeListActionDropdown = () => {
-  const { navigateToDelete } = useThemeListHeaderNavigation();
+  const router = useRouter();
 
   return (
     <DropdownMenu>
@@ -21,8 +20,15 @@ export const DefaultThemeListActionDropdown = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem
+          className="text-primary focus:text-primary"
+          onClick={() => router.push("/themes/create")}
+        >
+          <Plus className="mr-2 h-4 w-4" />
+          생성
+        </DropdownMenuItem>
+        <DropdownMenuItem
           className="text-destructive focus:text-destructive"
-          onClick={navigateToDelete}
+          onClick={() => router.push("/themes/delete")}
         >
           <Trash className="mr-2 h-4 w-4" />
           삭제
