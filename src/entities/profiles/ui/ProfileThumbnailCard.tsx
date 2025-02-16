@@ -7,8 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/ui/card";
-import { Button } from "@/shared/ui/button";
-import { Share2, Link, QrCode } from "lucide-react";
 import { ShareKakaoButton } from "./ShareKakaoButton";
 import { ShareURLButton } from "./ShareURLButton";
 import { ShareQRCodeButton } from "./ShareQRCodeButton";
@@ -17,12 +15,14 @@ type ProfileThumbnailCardProps = {
   title: string;
   modifiedDate: string;
   profileId: string;
+  profileUrl: string;
 };
 
 export function ProfileThumbnailCard({
   title,
   modifiedDate,
   profileId,
+  profileUrl,
 }: ProfileThumbnailCardProps) {
   return (
     <Card className="w-fullmin-w-[125px] transition-shadow hover:shadow-lg">
@@ -34,15 +34,9 @@ export function ProfileThumbnailCard({
       </CardContent>
       <CardFooter className="flex gap-2 pb-3 pt-1">
         <div className="grid w-full grid-cols-3 gap-2">
-          <ShareKakaoButton
-            profileUrl={`${window.location.origin}/profiles/${profileId}`}
-          />
-          <ShareURLButton
-            profileUrl={`${window.location.origin}/profiles/${profileId}`}
-          />
-          <ShareQRCodeButton
-            profileUrl={`${window.location.origin}/profiles/${profileId}`}
-          />
+          <ShareKakaoButton profileUrl={profileUrl} />
+          <ShareURLButton profileUrl={profileUrl} />
+          <ShareQRCodeButton profileUrl={profileUrl} />
         </div>
       </CardFooter>
     </Card>
