@@ -3,6 +3,7 @@ import AuthButton from "@/features/auth/ui/AuthButton";
 import { ExternalLink } from "@/shared/ui/ExternalLink";
 import "@/application/globals.css";
 import { Logo } from "@/shared/ui/Logo";
+import { Toaster } from "@/shared/ui/sonner";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -50,6 +51,7 @@ export default function RootLayout({
             </div>
           </footer>
         </main>
+        <Toaster />
       </body>
     </html>
   );
