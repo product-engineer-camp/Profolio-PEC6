@@ -14,11 +14,13 @@ import { useState } from "react";
 type ProfileSortingDropdownMenuProps = {
   onSort: (option: SortOption) => void;
   currentSort: SortOption;
+  disabled?: boolean;
 };
 
 export function ProfileSortingDropdownMenu({
   onSort,
   currentSort,
+  disabled,
 }: ProfileSortingDropdownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -32,6 +34,7 @@ export function ProfileSortingDropdownMenu({
         <Button
           variant="ghost"
           size="sm"
+          disabled={disabled}
           className="flex items-center gap-1 text-muted-foreground hover:text-foreground"
         >
           {getCurrentLabel()}
@@ -52,6 +55,7 @@ export function ProfileSortingDropdownMenu({
                 ? "bg-accent font-medium"
                 : "hover:bg-accent/80"
             }`}
+            disabled={disabled}
           >
             {option.label}
           </DropdownMenuItem>
