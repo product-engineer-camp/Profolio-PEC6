@@ -55,6 +55,14 @@ module.exports = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      screens: {
+        mobile: "320px", // <-- *신규로 추가한 모바일 스크린용 breakpoint prefix
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1536px",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
