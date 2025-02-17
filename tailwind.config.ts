@@ -56,7 +56,7 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       screens: {
-        mobile: "320px", // <-- *신규로 추가한 모바일 스크린용 breakpoint prefix
+        mobile: "375px", // <-- *신규로 추가한 모바일 스크린용 breakpoint prefix
         sm: "640px",
         md: "768px",
         lg: "1024px",

@@ -19,7 +19,7 @@ export function ShareURLButton({ profileUrl }: ShareURLButtonProps) {
       }}
     >
       <Link className="h-4 w-4 shrink-0 sm:h-5 sm:w-5" />
-      <span className="truncate text-[10px] sm:text-sm">URL 복사</span>
+      <span className="truncate text-[12px]">URL 복사</span>
     </Button>
   );
 }
