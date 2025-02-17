@@ -8,10 +8,24 @@ type ShareKakaoButtonProps = {
 };
 
 export function ShareKakaoButton({ profileUrl }: ShareKakaoButtonProps) {
+  const handleShare = () => {
+    if (window.Kakao === undefined) {
+      return;
+    }
+
+    window.Kakao.Share.sendCustom({
+      templateId: Number(process.env.NEXT_PUBLIC_KAKAO_SHARE_TEMPLATE_ID),
+      templateArgs: {
+        USER_NAME: "홍길동",
+      },
+    });
+  };
+
   return (
     <Button
       variant="ghost"
       size="sm"
+      onClick={handleShare}
       className="flex w-full items-center justify-center gap-1.5 bg-[#FEE500] px-2 transition-colors hover:bg-[#FDD800] sm:gap-2 sm:px-4"
     >
       <Image

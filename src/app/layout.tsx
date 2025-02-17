@@ -5,6 +5,7 @@ import "@/application/globals.css";
 import { Logo } from "@/shared/ui/Logo";
 import { Toaster } from "@/shared/ui/sonner";
 import Script from "next/script";
+import { KakaoScript } from "./_lib/KakaoScript";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -53,12 +54,8 @@ export default function RootLayout({
           </footer>
         </main>
         <Toaster />
+        <KakaoScript />
       </body>
-      <Script
-        src={`https://t1.kakaocdn.net/kakao_js_sdk/${process.env.NEXT_PUBLIC_KAKAO_VERSION}/kakao.min.js`}
-        integrity={process.env.NEXT_PUBLIC_KAKAO_INTEGRITY_VALUE}
-        strategy="afterInteractive"
-      />
     </html>
   );
 }

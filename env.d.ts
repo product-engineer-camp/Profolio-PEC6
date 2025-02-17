@@ -6,5 +6,6 @@ declare namespace NodeJS {
     NEXT_PUBLIC_KAKAO_INTEGRITY_VALUE: string;
     NEXT_PUBLIC_KAKAO_VERSION: string;
     NEXT_PUBLIC_KAKAO_APP_KEY: string;
+    NEXT_PUBLIC_KAKAO_SHARE_TEMPLATE_ID: string;
   }
 }
