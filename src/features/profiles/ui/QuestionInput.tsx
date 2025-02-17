@@ -1,6 +1,11 @@
 import { Input } from "@/shared/ui/input";
 import { cn } from "@/shared/ui/lib/utils";
-import { QuestionInputProps } from "./types";
+import { Question } from "@/src/entities/profiles/api/type";
+type QuestionInputProps = {
+  value: any;
+  onChange: (questionId: string, value: any) => void;
+  question: Question;
+};
 
 export const QuestionInput = ({
   value,

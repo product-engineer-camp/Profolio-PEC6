@@ -1,4 +1,4 @@
-import { Question } from "../model/question.type";
+import { Question } from "./type";
 
 export async function getBasicQuestions(): Promise<{ questions: Question[] }> {
   const response = await fetch("/api/questions/basic");

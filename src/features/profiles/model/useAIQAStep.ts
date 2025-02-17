@@ -1,30 +1,25 @@
 import { useState } from "react";
-import { useBasicQuestions } from "./useBasicQuestions";
-import { BasicQAAnswers } from "./type";
+import { AIQAAnswers } from "./type";
+import { Question } from "@/src/entities/profiles/api/type";
 
-type BasicQAState = {
+type AIQAState = {
   currentQuestionIndex: number;
-  answers: BasicQAAnswers;
+  answers: AIQAAnswers;
 };
 
-type BasicQAActions = {
+type AIQAActions = {
   handleAnswer: (questionId: string, answer: any) => void;
   handleNext: () => void;
   handlePrevious: () => void;
 };
 
-export const useBasicQAStep = (
-  onComplete: (answers: BasicQAAnswers) => void,
-  initialAnswers: BasicQAAnswers = {},
-): [BasicQAState, BasicQAActions] => {
+export const useAIQAStep = (
+  questions: Question[],
+  onComplete: (answers: AIQAAnswers) => void,
+  initialAnswers: AIQAAnswers = {},
+): [AIQAState, AIQAActions] => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<BasicQAAnswers>(initialAnswers);
-
-  const { data } = useBasicQuestions();
-  const questions = data?.questions || [];
-
-  console.log(answers);
-  console.log("basicQA", answers);
+  const [answers, setAnswers] = useState<AIQAAnswers>(initialAnswers);
 
   const handleAnswer = (questionId: string, answer: any) => {
     setAnswers((prev) => ({

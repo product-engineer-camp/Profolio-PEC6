@@ -10,7 +10,7 @@ export default async function LandingPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const profileCreateLink = user ? "/profiles/create/step1" : LOGIN_PATHNAME;
+  const profileCreateLink = user ? "/profiles/create" : LOGIN_PATHNAME;
 
   return (
     <div className="flex min-h-screen flex-col items-center px-4 py-16">
