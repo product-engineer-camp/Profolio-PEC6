@@ -23,9 +23,6 @@ export const useBasicQAStep = (
   const { data } = useBasicQuestions();
   const questions = data?.questions || [];
 
-  console.log(answers);
-  console.log("basicQA", answers);
-
   const handleAnswer = (questionId: string, answer: any) => {
     setAnswers((prev) => ({
       ...prev,
