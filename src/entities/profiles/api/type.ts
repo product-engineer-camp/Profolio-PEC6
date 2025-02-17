@@ -8,7 +8,7 @@ export interface Question {
   order: number;
   question: string;
   isRequired: boolean;
-  type: "text" | "select" | "multiSelect" | "number" | "range";
+  type: "text" | "select" | "number";
   options?: Array<{
     value: string;
     label: string;
