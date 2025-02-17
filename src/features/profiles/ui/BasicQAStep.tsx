@@ -3,9 +3,7 @@ import { useBasicQAStep } from "../model/useBasicQAStep";
 import { Button } from "@/shared/ui/button";
 import { ProgressBar } from "@/shared/ui/ProgressBar";
 import { QuestionInput } from "./QuestionInput";
-
 import { BasicQAAnswers } from "../model/type";
-import { useBasicQuestions } from "@/src/entities/profiles/model/useBasicQuestions";
 
 type BasicQAStepProps = {
   onComplete: (answers: BasicQAAnswers) => void;
@@ -17,12 +15,10 @@ export const BasicQAStep = ({
   initialAnswers = {},
 }: BasicQAStepProps) => {
   const [
-    { currentQuestionIndex, answers },
+    { currentQuestionIndex, answers, questions, isLoading },
     { handleAnswer, handleNext, handlePrevious },
   ] = useBasicQAStep(onComplete, initialAnswers);
 
-  const { data, isLoading } = useBasicQuestions();
-  const questions = data?.questions || [];
   const currentQuestion = questions[currentQuestionIndex];
 
   if (isLoading) {

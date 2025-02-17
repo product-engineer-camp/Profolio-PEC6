@@ -5,6 +5,8 @@ import { useBasicQuestions } from "@/src/entities/profiles/model/useBasicQuestio
 type BasicQAState = {
   currentQuestionIndex: number;
   answers: BasicQAAnswers;
+  questions: any[];
+  isLoading: boolean;
 };
 
 type BasicQAActions = {
@@ -20,7 +22,7 @@ export const useBasicQAStep = (
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<BasicQAAnswers>(initialAnswers);
 
-  const { data } = useBasicQuestions();
+  const { data, isLoading } = useBasicQuestions();
   const questions = data?.questions || [];
 
   const handleAnswer = (questionId: string, answer: any) => {
@@ -45,7 +47,7 @@ export const useBasicQAStep = (
   };
 
   return [
-    { currentQuestionIndex, answers },
+    { currentQuestionIndex, answers, questions, isLoading },
     { handleAnswer, handleNext, handlePrevious },
   ];
 };
