@@ -4,8 +4,8 @@ import { Button } from "@/shared/ui/button";
 import { ProgressBar } from "@/shared/ui/ProgressBar";
 import { QuestionInput } from "./QuestionInput";
 
-import { useBasicQuestions } from "../model/useBasicQuestions";
 import { BasicQAAnswers } from "../model/type";
+import { useBasicQuestions } from "@/src/entities/profiles/model/useBasicQuestions";
 
 type BasicQAStepProps = {
   onComplete: (answers: BasicQAAnswers) => void;

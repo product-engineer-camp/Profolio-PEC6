@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useBasicQuestions } from "./useBasicQuestions";
 import { BasicQAAnswers } from "./type";
+import { useBasicQuestions } from "@/src/entities/profiles/model/useBasicQuestions";
 
 type BasicQAState = {
   currentQuestionIndex: number;
