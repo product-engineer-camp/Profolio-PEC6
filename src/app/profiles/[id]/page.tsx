@@ -11,9 +11,11 @@ export default async function ProfileDetailPage({
   params,
 }: ProfileDetailPageProps) {
   const profile = await getProfile(params.id);
-  const currentUrl = `${process.env.NEXT_PUBLIC_APP_URL}/profiles/${params.id}`;
+  const profileUrl = `${process.env.NEXT_PUBLIC_APP_URL}/profiles/${params.id}`;
 
-  return (
-    <Profile profile={profile} profileId={params.id} currentUrl={currentUrl} />
-  );
+  if (!profile) {
+    return <div>프로필을 찾을 수 없습니다.</div>;
+  }
+
+  return <Profile profile={profile} profileUrl={profileUrl} />;
 }

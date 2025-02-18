@@ -9,24 +9,19 @@ import { ProfileAvatar } from "@/entities/profiles/ui/ProfileAvatar";
 import { Card, CardContent, CardFooter, CardHeader } from "@/shared/ui/card";
 
 type ProfileProps = {
-  profile: ProfileType | null;
-  profileId: string;
-  currentUrl: string;
+  profile: ProfileType;
+  profileUrl: string;
 };
 
-export function Profile({ profile, profileId, currentUrl }: ProfileProps) {
-  if (!profile) {
-    return <div>Loading...</div>;
-  }
-
+export function Profile({ profile, profileUrl }: ProfileProps) {
   const handleDelete = async () => {
     // TODO: 삭제 API 구현
-    console.log("삭제하기:", profileId);
+    console.log("삭제하기:", profile.id);
   };
 
   const handleCopy = async () => {
     // TODO: 복사 API 구현
-    console.log("복사하기:", profileId);
+    console.log("복사하기:", profile.id);
   };
 
   return (
@@ -34,7 +29,7 @@ export function Profile({ profile, profileId, currentUrl }: ProfileProps) {
       <CardHeader className="flex flex-row items-center justify-between">
         <h1 className="text-2xl font-bold">{profile.title}</h1>
         <ProfileDropdownMenu
-          profileId={Number(profileId)}
+          profileId={profile.id}
           onDelete={handleDelete}
           onCopy={handleCopy}
         />
@@ -49,9 +44,9 @@ export function Profile({ profile, profileId, currentUrl }: ProfileProps) {
         </div>
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
-        <ShareKakaoButton profileUrl={currentUrl} />
-        <ShareURLButton profileUrl={currentUrl} />
-        <ShareQRCodeButton profileUrl={currentUrl} />
+        <ShareKakaoButton profileUrl={profileUrl} />
+        <ShareURLButton profileUrl={profileUrl} />
+        <ShareQRCodeButton profileUrl={profileUrl} />
       </CardFooter>
     </Card>
   );
