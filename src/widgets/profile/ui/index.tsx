@@ -9,64 +9,58 @@ import { useProfileSteps } from "../model/useProfileSteps";
 import { useProfileData } from "../model/useProfileData";
 import { ProfileQuestionAnswer } from "@/src/features/profiles/model/type";
 import { useAIGenerateQuestions } from "@/src/features/profiles/model/useAIGenerateQuestions";
-import { useBasicQAStep } from "@/src/features/profiles/model/useBasicQAStep";
-import { useAIQAStep } from "@/src/features/profiles/model/useAIQAStep";
+import { useAnswers } from "@/features/profiles/model/useAnswers";
+import { useBasicQuestions } from "@/src/entities/profiles/model/useBasicQuestions";
+import { useStepNavigation } from "@/src/shared/model/useStepNavigation";
 
 export default function CreateProfileProcess() {
   const { currentStep, updateStep } = useProfileSteps();
   const { profileInput, updateBasicAnswers, updateAIAnswers } =
     useProfileData();
+  const { data: basicQuestionsData, isLoading: isLoadingBasicQuestions } =
+    useBasicQuestions();
 
-  // Basic QA Step
+  const {
+    questions: aiGeneratedQuestions,
+    isLoading: isGeneratingQuestions,
+    generateAIQuestions,
+    error,
+  } = useAIGenerateQuestions();
+
+  const { answers: basicAnswers, handleAnswer: handleBasicAnswer } = useAnswers(
+    profileInput.basicAnswers,
+  );
+  const { answers: aiAnswers, handleAnswer: handleAIAnswer } = useAnswers(
+    profileInput.aiAnswers,
+  );
+
   const handleBasicQAComplete = async (answers: ProfileQuestionAnswer) => {
     updateBasicAnswers(answers);
     try {
-      await generate(answers);
+      await generateAIQuestions(answers);
       updateStep(2);
     } catch {
       // error 상태로 처리됨
     }
   };
-
-  const [
-    {
-      currentQuestionIndex: basicQuestionIndex,
-      answers: basicAnswers,
-      questions: basicQuestions,
-      isLoading: isLoadingBasicQuestions,
-    },
-    {
-      handleAnswer: handleBasicAnswer,
-      handleNext: handleBasicNext,
-      handlePrevious: handleBasicPrevious,
-    },
-  ] = useBasicQAStep(handleBasicQAComplete, profileInput.basicAnswers);
-
-  const {
-    questions: aiGeneratedQuestions,
-    isLoading: isGeneratingQuestions,
-    generate,
-    error,
-  } = useAIGenerateQuestions();
-
-  // AI QA Step
   const handleAIQAComplete = (answers: ProfileQuestionAnswer) => {
     updateAIAnswers(answers);
     updateStep(3);
   };
 
-  const [
-    { currentQuestionIndex: aiQuestionIndex, answers: aiAnswers },
-    {
-      handleAnswer: handleAIAnswer,
-      handleNext: handleAINext,
-      handlePrevious: handleAIPrevious,
+  const basicNavigation = useStepNavigation({
+    totalSteps: basicQuestionsData?.questions.length || 0,
+    onComplete: () => {
+      handleBasicQAComplete(basicAnswers);
     },
-  ] = useAIQAStep(
-    aiGeneratedQuestions,
-    handleAIQAComplete,
-    profileInput.aiAnswers,
-  );
+  });
+
+  const aiNavigation = useStepNavigation({
+    totalSteps: aiGeneratedQuestions.length,
+    onComplete: () => {
+      handleAIQAComplete(aiAnswers);
+    },
+  });
 
   if (isGeneratingQuestions) {
     return (
@@ -95,7 +89,7 @@ export default function CreateProfileProcess() {
         <Button
           onClick={() => {
             if (profileInput.basicAnswers) {
-              generate(profileInput.basicAnswers);
+              generateAIQuestions(profileInput.basicAnswers);
             }
           }}
           variant="default"
@@ -109,23 +103,23 @@ export default function CreateProfileProcess() {
   return {
     1: (
       <QAStep
-        questions={basicQuestions}
+        questions={basicQuestionsData?.questions || []}
         isLoading={isLoadingBasicQuestions}
-        currentQuestionIndex={basicQuestionIndex}
+        currentQuestionIndex={basicNavigation.currentStep}
         answers={basicAnswers}
         onAnswer={handleBasicAnswer}
-        onNext={handleBasicNext}
-        onPrevious={handleBasicPrevious}
+        onNext={basicNavigation.handleNext}
+        onPrevious={basicNavigation.handlePrevious}
       />
     ),
     2: (
       <QAStep
         questions={aiGeneratedQuestions}
-        currentQuestionIndex={aiQuestionIndex}
+        currentQuestionIndex={aiNavigation.currentStep}
         answers={aiAnswers}
         onAnswer={handleAIAnswer}
-        onNext={handleAINext}
-        onPrevious={handleAIPrevious}
+        onNext={aiNavigation.handleNext}
+        onPrevious={aiNavigation.handlePrevious}
       />
     ),
     3: <ThemeSelectStep />,
