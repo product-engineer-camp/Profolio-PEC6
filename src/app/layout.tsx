@@ -31,7 +31,6 @@ export default function RootLayout({
                 <AuthButton />
               </div>
             </nav>
-
             {children}
 
             <footer className="flex w-full justify-center border-t border-t-foreground/10 p-4 text-center text-xs">
