@@ -1,29 +1,27 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback } from "react";
 
 export const useCheckedList = () => {
-  const [checkedIds, setCheckedIds] = useState<string[]>([]);
+  const [checkedIds, setCheckedIds] = useState<Set<number>>(new Set());
 
   const toggleSelection = useCallback((id: number) => {
-    const idStr = String(id);
-    setCheckedIds((prev) =>
-      prev.includes(idStr)
-        ? prev.filter((checkedId) => checkedId !== idStr)
-        : [...prev, idStr],
-    );
+    setCheckedIds((prevIds) => {
+      const newSet = new Set(prevIds);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
   }, []);
 
   const clearChecked = useCallback(() => {
-    setCheckedIds([]);
+    setCheckedIds(new Set());
   }, []);
-
-  return useMemo(
-    () => ({
-      checkedIds,
-      toggleSelection,
-      clearChecked,
-      hasCheckedItems: checkedIds.length > 0,
-      checkedCount: checkedIds.length,
-    }),
-    [checkedIds, toggleSelection, clearChecked],
-  );
+  return {
+    checkedIds: Array.from(checkedIds).map(String),
+    toggleSelection,
+    clearChecked,
+    hasCheckedItems: checkedIds.size > 0,
+  };
 };
