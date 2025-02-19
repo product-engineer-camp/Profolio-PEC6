@@ -1,21 +1,27 @@
 import { Button } from "@/shared/ui/button";
-import { Trash } from "lucide-react";
-import { deleteTheme } from "../api/deleteTheme";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useCheckedThemes } from "../lib/CheckedThemeContext";
+import { useDeleteThemes } from "../model/useDeleteThemes";
+
+import { useRouter } from "next/navigation";
 
 export const DeleteThemeListActionHeader = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const themeId = searchParams.get("id");
-
+  const { hasCheckedThemes, checkedThemeIds, clearCheckedThemes } =
+    useCheckedThemes();
+  const { deleteThemes } = useDeleteThemes({
+    onSuccess: () => {
+      clearCheckedThemes();
+      router.push("/themes");
+    },
+  });
   const handleDelete = async () => {
-    if (!themeId) return;
+    if (!hasCheckedThemes) return;
 
     try {
-      await deleteTheme(Number(themeId));
-      router.push("/themes");
+      const ids = checkedThemeIds.map(Number);
+      await deleteThemes(ids);
     } catch (error) {
-      console.error("Failed to delete theme:", error);
+      console.error("Failed to delete themes:", error);
     }
   };
 
@@ -28,9 +34,13 @@ export const DeleteThemeListActionHeader = () => {
       >
         완료
       </Button>
-      <Button variant="destructive" size="icon" onClick={handleDelete}>
-        <Trash className="h-4 w-4" />
-        <span className="sr-only">테마 삭제</span>
+      <Button
+        variant="destructive"
+        size="icon"
+        onClick={handleDelete}
+        disabled={!hasCheckedThemes}
+      >
+        삭제
       </Button>
     </>
   );
