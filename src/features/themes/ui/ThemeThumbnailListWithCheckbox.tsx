@@ -6,12 +6,10 @@ import { ErrorMessage } from "@/shared/ui/ErrorMessage";
 import { ThemeThumbnailCardWithCheckbox } from "./ThemeThumbnailCardWithCheckbox";
 
 type ThemeThumbnailListWithCheckboxProps = {
-  checkedThemeIds: string[];
   onToggleCheck: (id: number) => void;
 };
 
 export const ThemeThumbnailListWithCheckbox = ({
-  checkedThemeIds,
   onToggleCheck,
 }: ThemeThumbnailListWithCheckboxProps) => {
   const { ref, inView } = useInView();
@@ -43,7 +41,6 @@ export const ThemeThumbnailListWithCheckbox = ({
           <ThemeThumbnailCardWithCheckbox
             key={theme.id}
             {...theme}
-            isChecked={checkedThemeIds.includes(String(theme.id))}
             onToggleCheck={onToggleCheck}
           />
         )),

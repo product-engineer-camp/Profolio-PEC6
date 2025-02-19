@@ -26,10 +26,7 @@ export default function ThemeDeletePage() {
         checkedThemeIds={checkedIds}
         hasCheckedThemes={hasCheckedItems}
       />
-      <ThemeThumbnailListWithCheckbox
-        checkedThemeIds={checkedIds}
-        onToggleCheck={toggleSelection}
-      />
+      <ThemeThumbnailListWithCheckbox onToggleCheck={toggleSelection} />
     </>
   );
 }
