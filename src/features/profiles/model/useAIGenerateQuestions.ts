@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { BasicQAAnswers } from "./type";
+import { ProfileQuestionAnswer } from "./type";
 import { generateAIQuestions } from "../api/generateAIQuestions";
 import { Question } from "@/src/entities/profiles/api/type";
 
@@ -7,12 +7,12 @@ type UseAIGenerateQuestionsReturn = {
   questions: Question[];
   isLoading: boolean;
   error: Error | null;
-  generate: (answers: BasicQAAnswers) => Promise<void>;
+  generate: (answers: ProfileQuestionAnswer) => Promise<void>;
 };
 
 export const useAIGenerateQuestions = (): UseAIGenerateQuestionsReturn => {
   const mutation = useMutation({
-    mutationFn: async (answers: BasicQAAnswers) => {
+    mutationFn: async (answers: ProfileQuestionAnswer) => {
       const { questions } = await generateAIQuestions(answers);
       return questions;
     },

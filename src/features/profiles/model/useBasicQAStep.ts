@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { BasicQAAnswers } from "./type";
+import { ProfileQuestionAnswer } from "./type";
 import { useBasicQuestions } from "@/src/entities/profiles/model/useBasicQuestions";
 
 type BasicQAState = {
   currentQuestionIndex: number;
-  answers: BasicQAAnswers;
+  answers: ProfileQuestionAnswer;
   questions: any[];
   isLoading: boolean;
 };
@@ -16,11 +16,11 @@ type BasicQAActions = {
 };
 
 export const useBasicQAStep = (
-  onComplete: (answers: BasicQAAnswers) => void,
-  initialAnswers: BasicQAAnswers = {},
+  onComplete: (answers: ProfileQuestionAnswer) => void,
+  initialAnswers: ProfileQuestionAnswer = {},
 ): [BasicQAState, BasicQAActions] => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<BasicQAAnswers>(initialAnswers);
+  const [answers, setAnswers] = useState<ProfileQuestionAnswer>(initialAnswers);
 
   const { data, isLoading } = useBasicQuestions();
   const questions = data?.questions || [];

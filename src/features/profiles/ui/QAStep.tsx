@@ -1,28 +1,33 @@
-"use client";
 import { Button } from "@/shared/ui/button";
 import { ProgressBar } from "@/shared/ui/ProgressBar";
 import { QuestionInput } from "./QuestionInput";
-import { useAIQAStep } from "../model/useAIQAStep";
-import { BasicQAAnswers } from "../model/type";
+import { ProfileQuestionAnswer } from "../model/type";
 import { Question } from "@/src/entities/profiles/api/type";
 
-type AIGeneratedQAStepProps = {
+type QAStepProps = {
   questions: Question[];
-  onComplete: (answers: BasicQAAnswers) => void;
-  initialAnswers?: BasicQAAnswers;
+  currentQuestionIndex: number;
+  answers: ProfileQuestionAnswer;
+  onAnswer: (questionId: string, answer: string) => void;
+  onNext: () => void;
+  onPrevious: () => void;
+  isLoading?: boolean;
 };
 
-export const AIGeneratedQAStep = ({
+export const QAStep = ({
   questions,
-  onComplete,
-  initialAnswers = {},
-}: AIGeneratedQAStepProps) => {
-  const [
-    { currentQuestionIndex, answers },
-    { handleAnswer, handleNext, handlePrevious },
-  ] = useAIQAStep(questions, onComplete, initialAnswers);
-
+  isLoading,
+  currentQuestionIndex,
+  answers,
+  onAnswer,
+  onNext,
+  onPrevious,
+}: QAStepProps) => {
   const currentQuestion = questions[currentQuestionIndex];
+
+  if (isLoading) {
+    return <div className="text-center">질문을 불러오는 중...</div>;
+  }
 
   if (!currentQuestion) {
     return <div className="text-center">질문이 없습니다.</div>;
@@ -38,7 +43,7 @@ export const AIGeneratedQAStep = ({
           <QuestionInput
             question={currentQuestion}
             value={answers[currentQuestion.id]}
-            onChange={handleAnswer}
+            onChange={(value) => onAnswer(currentQuestion.id, value)}
           />
         </div>
       </div>
@@ -46,13 +51,13 @@ export const AIGeneratedQAStep = ({
       <div className="flex gap-4">
         <Button
           variant="outline"
-          onClick={handlePrevious}
+          onClick={onPrevious}
           disabled={currentQuestionIndex === 0}
           className="flex-1 font-bold"
         >
           이전
         </Button>
-        <Button onClick={handleNext} className="flex-1 font-bold">
+        <Button onClick={onNext} className="flex-1 font-bold">
           {currentQuestionIndex === questions.length - 1 ? "완료" : "다음"}
         </Button>
       </div>

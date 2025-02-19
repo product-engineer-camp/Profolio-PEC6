@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { AIQAAnswers } from "./type";
+import { ProfileQuestionAnswer } from "./type";
 import { Question } from "@/src/entities/profiles/api/type";
 
 type AIQAState = {
   currentQuestionIndex: number;
-  answers: AIQAAnswers;
+  answers: ProfileQuestionAnswer;
 };
 
 type AIQAActions = {
@@ -15,11 +15,11 @@ type AIQAActions = {
 
 export const useAIQAStep = (
   questions: Question[],
-  onComplete: (answers: AIQAAnswers) => void,
-  initialAnswers: AIQAAnswers = {},
+  onComplete: (answers: ProfileQuestionAnswer) => void,
+  initialAnswers: ProfileQuestionAnswer = {},
 ): [AIQAState, AIQAActions] => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<AIQAAnswers>(initialAnswers);
+  const [answers, setAnswers] = useState<ProfileQuestionAnswer>(initialAnswers);
 
   const handleAnswer = (questionId: string, answer: any) => {
     setAnswers((prev) => ({

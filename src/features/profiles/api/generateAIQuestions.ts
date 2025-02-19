@@ -1,4 +1,4 @@
-import { BasicQAAnswers } from "../model/type";
+import { ProfileQuestionAnswer } from "../model/type";
 import { Question } from "@/src/entities/profiles/api/type";
 import { generateAIQuestionsPrompt } from "../model/generateAIQuestionsPrompt";
 import { generatedAIQuestionsFormatter } from "../model/generatedAIQuestionsFormatter";
@@ -8,7 +8,7 @@ type GenerateAIQuestionsResponse = {
 };
 
 export const generateAIQuestions = async (
-  basicAnswers: BasicQAAnswers,
+  basicAnswers: ProfileQuestionAnswer,
 ): Promise<GenerateAIQuestionsResponse> => {
   const message = generateAIQuestionsPrompt(basicAnswers);
 

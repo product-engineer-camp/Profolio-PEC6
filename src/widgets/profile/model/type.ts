@@ -1,8 +1,8 @@
-import { BasicQAAnswers } from "@/src/features/profiles/model/type";
+import { ProfileQuestionAnswer } from "@/src/features/profiles/model/type";
 
 export type ProfileInputType = {
-  basicAnswers: BasicQAAnswers;
-  aiAnswers: BasicQAAnswers;
+  basicAnswers: ProfileQuestionAnswer;
+  aiAnswers: ProfileQuestionAnswer;
   preview: {
     title: string;
     description: string;

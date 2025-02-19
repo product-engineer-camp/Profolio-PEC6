@@ -1,4 +1,4 @@
-import { BasicQAAnswers } from "./type";
+import { ProfileQuestionAnswer } from "./type";
 import {
   BASIC_QUESTIONS,
   QUESTION_GENERATION_GUIDE,
@@ -7,7 +7,7 @@ import {
 } from "../constants/aiQuestionsPrompt";
 
 export const generateAIQuestionsPrompt = (
-  basicAnswers: BasicQAAnswers,
+  basicAnswers: ProfileQuestionAnswer,
 ): string => {
   return `다음 10개의 기본 질문에 대한 답변을 바탕으로, 더 깊이 있는 후속 질문들을 생성해주세요:
 
