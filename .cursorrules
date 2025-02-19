@@ -1,0 +1,75 @@
+# Feature-Sliced Design (FSD) Architecture Rules
+
+# Layers
+layers:
+  - shared    # 재사용 가능한 기본 로직 (utils, ui, api, config 등)
+  - entities  # 비즈니스 엔티티 (themes, profiles) - GET 요청 관련 기능
+  - features  # 비즈니스 기능 (themes, profiles) - POST/PUT/DELETE 요청 관련 기능
+  - widgets   # 복합적인 UI 블록
+  - app       # Next.js App Router (page.tsx, layout.tsx 등)
+
+# Segments (각 레이어 내부의 슬라이스)
+segments:
+  - ui        # UI 컴포넌트
+  - model     # 비즈니스 로직 (store, actions, selectors, data transformers)
+  - api       # API 요청 관련
+  - config    # 설정
+  - lib       # 유틸리티 함수
+  - constants # 상수
+
+# Widget Rules
+widget-rules:
+  - All widget code must be in 'index.tsx'
+  - No additional files or directories within widget
+  - Directory name must be PascalCase
+  - Directory structure: widgets/PascalCase/index.tsx
+  - No nested components in separate files
+
+# Import Rules
+rules:
+  # 상위 레이어는 하위 레이어만 import 가능
+  - shared/** can import nothing
+  - entities/** can import shared/**
+  - features/** can import [entities/**, shared/**]
+  - widgets/** can import [features/**, entities/**, shared/**]
+  - app/** can import [widgets/**, features/**, entities/**, shared/**]
+
+  # 동일 레이어 내에서는 같은 슬라이스만 import 가능
+  - "**/ui/*" can import "**/ui/*"
+  - "**/model/*" can import "**/model/*"
+  - "**/api/*" can import "**/api/*"
+  - "**/lib/*" can import "**/lib/*"
+
+  # Widget must contain at least one feature
+  - widgets/** must import features/**
+
+# Public API
+public-api:
+  - index.ts
+  - */index.ts
+  - */public.ts
+
+# Naming Conventions
+naming:
+  - entities/**/: camelCase
+  - features/**/: camelCase
+  - shared/**/: camelCase
+  - widgets/**/: PascalCase
+  - app/**/: camelCase 
+
+  # Function Naming
+  - model/**/transform*: camelCase  # Data transformer functions must start with 'transform' prefix
+
+# Types
+types:
+  - Use 'type' instead of 'interface'
+  - type naming: PascalCase
+  - type file naming: '*.types.ts'
+  - API response types: write in 'api/*.types.ts'
+  - UI related types: write in 'model/types.ts'
+
+ # Export Rules
+  - All types must be named exports
+  - No default exports for types
+  - Group related types in same file
+  - Use explicit type exports in index.ts

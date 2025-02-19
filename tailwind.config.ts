@@ -55,7 +55,65 @@ module.exports = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      backgroundImage: {
+        "pattern-solid": "none",
+        "pattern-gradient": "linear-gradient(45deg, var(--tw-gradient-stops))",
+        "pattern-dots": "radial-gradient(currentColor 2px, transparent 2px)",
+        "pattern-stripes":
+          "linear-gradient(45deg, currentColor 25%, transparent 25%, transparent 50%, currentColor 50%, currentColor 75%, transparent 75%, transparent)",
+        "pattern-waves": `
+          linear-gradient(45deg, currentColor 25%, transparent 25%),
+          linear-gradient(-45deg, currentColor 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, currentColor 75%),
+          linear-gradient(-45deg, transparent 75%, currentColor 75%)
+        `,
+        "pattern-zigzag": `
+          radial-gradient(100% 100% at 100% 0, currentColor 4%, 
+            currentColor 4% 14%, transparent 14% 24%, 
+            currentColor 22% 34%, transparent 34% 44%, 
+            currentColor 44% 56%, transparent 56% 66%, 
+            currentColor 66% 76%, transparent 76% 86%, 
+            currentColor 86% 96%, transparent 96%),
+          radial-gradient(100% 100% at 0 100%, transparent,
+            #0008 4%,
+            currentColor 4% 14%, transparent 14% 24%, 
+            currentColor 22% 34%, transparent 34% 44%, 
+            currentColor 44% 56%, transparent 56% 66%, 
+            currentColor 66% 76%, transparent 76% 86%, 
+            currentColor 86% 96%, transparent 96%)
+        `,
+        "pattern-square": `
+          linear-gradient(45deg, currentColor 25%, transparent 25%, transparent 75%, currentColor 75%, currentColor),
+          linear-gradient(45deg, currentColor 25%, transparent 25%, transparent 75%, currentColor 75%, currentColor)
+        `,
+      },
+      backgroundSize: {
+        "size-dots": "16px 16px",
+        "size-stripes": "16px 16px",
+        "size-waves": "16px 16px",
+        "size-zigzag": "100px 100px",
+        "size-square": "16px 16px",
+      },
+      backgroundPosition: {
+        "pos-zigzag": "0 0, 10px 0, 10px -10px, 0 10px",
+        "pos-square": "0 0, 8px 8px",
+      },
     },
   },
+  safelist: [
+    "bg-pattern-solid",
+    "bg-pattern-gradient",
+    "bg-pattern-dots",
+    "bg-pattern-stripes",
+    "bg-pattern-waves",
+    "bg-pattern-zigzag",
+    "bg-size-dots",
+    "bg-size-stripes",
+    "bg-size-waves",
+    "bg-size-zigzag",
+    "bg-pos-waves",
+    "bg-pos-zigzag",
+    "bg-repeat",
+  ],
   plugins: [require("tailwindcss-animate")],
 };
