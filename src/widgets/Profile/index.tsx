@@ -2,9 +2,9 @@
 
 import { Profile as ProfileType } from "@/entities/profiles/model/type";
 import { ProfileDropdownMenu } from "@/features/profiles/ui/ProfileDropdownMenu";
-import { ShareKakaoButton } from "@/entities/profiles/ui/ShareKakaoButton";
-import { ShareURLButton } from "@/entities/profiles/ui/ShareURLButton";
-import { ShareQRCodeButton } from "@/entities/profiles/ui/ShareQRCodeButton";
+import { ShareKakaoButton } from "@/src/features/profiles/ui/ShareKakaoButton";
+import { ShareURLButton } from "@/src/features/profiles/ui/ShareURLButton";
+import { ShareQRCodeButton } from "@/src/features/profiles/ui/ShareQRCodeButton";
 import { ProfileAvatar } from "@/entities/profiles/ui/ProfileAvatar";
 import { Card, CardContent, CardFooter, CardHeader } from "@/shared/ui/card";
 

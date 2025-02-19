@@ -10,6 +10,7 @@ import {
 import { ShareKakaoButton } from "./ShareKakaoButton";
 import { ShareURLButton } from "./ShareURLButton";
 import { ShareQRCodeButton } from "./ShareQRCodeButton";
+import { ProfileTitle } from "@/entities/profiles/ui/ProfileTitle";
 
 type ProfileThumbnailCardProps = {
   title: string;
@@ -27,7 +28,9 @@ export function ProfileThumbnailCard({
   return (
     <Card className="w-fullmin-w-[125px] transition-shadow hover:shadow-lg">
       <CardHeader className="pb-1 pt-3">
-        <CardTitle className="text-left text-lg font-medium">{title}</CardTitle>
+        <CardTitle className="text-left font-medium">
+          <ProfileTitle title={title} />
+        </CardTitle>
       </CardHeader>
       <CardContent className="flex justify-end py-1">
         <p className="text-sm text-gray-500">{modifiedDate}</p>

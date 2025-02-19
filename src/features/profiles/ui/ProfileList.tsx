@@ -1,6 +1,6 @@
 "use client";
 
-import { ProfileThumbnailCard } from "@/entities/profiles/ui/ProfileThumbnailCard";
+import { ProfileThumbnailCard } from "@/src/features/profiles/ui/ProfileThumbnailCard";
 import type { Profile } from "@/entities/profiles/model/type";
 
 type ProfileListProps = {
