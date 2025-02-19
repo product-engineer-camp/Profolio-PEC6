@@ -4,8 +4,7 @@ import { ExternalLink } from "@/shared/ui/ExternalLink";
 import "@/application/globals.css";
 import { Logo } from "@/shared/ui/Logo";
 import { Toaster } from "@/shared/ui/sonner";
-import Script from "next/script";
-import { KakaoScript } from "./_lib/KakaoScript";
+import { KakaoScript } from "./_script/KakaoScript";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
