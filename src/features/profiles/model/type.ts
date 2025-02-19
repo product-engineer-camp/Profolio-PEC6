@@ -1,1 +1,2 @@
-export type ProfileQuestionAnswer = Record<string, any>;
+export type ProfileQuestionAnswer = Record<string, QuestionValue>;
+export type QuestionValue = string | number;

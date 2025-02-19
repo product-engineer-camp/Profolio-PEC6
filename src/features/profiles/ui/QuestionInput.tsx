@@ -9,8 +9,7 @@ import {
   SelectValue,
 } from "@/src/shared/ui/select";
 import { useCallback } from "react";
-
-type QuestionValue = string | number;
+import { QuestionValue } from "../model/type";
 
 type QuestionInputProps = {
   value: QuestionValue;

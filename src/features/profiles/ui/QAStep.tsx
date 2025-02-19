@@ -1,14 +1,14 @@
 import { Button } from "@/shared/ui/button";
 import { ProgressBar } from "@/shared/ui/ProgressBar";
 import { QuestionInput } from "./QuestionInput";
-import { ProfileQuestionAnswer } from "../model/type";
+import { ProfileQuestionAnswer, QuestionValue } from "../model/type";
 import { Question } from "@/src/entities/profiles/api/type";
 
 type QAStepProps = {
   questions: Question[];
   currentQuestionIndex: number;
   answers: ProfileQuestionAnswer;
-  onAnswer: (questionId: string, answer: string) => void;
+  onAnswer: (questionId: string, answer: QuestionValue) => void;
   onNext: () => void;
   onPrevious: () => void;
   isLoading?: boolean;
@@ -43,7 +43,7 @@ export const QAStep = ({
           <QuestionInput
             question={currentQuestion}
             value={answers[currentQuestion.id]}
-            onChange={(value) => onAnswer(currentQuestion.id, value)}
+            onChange={(questionId, value) => onAnswer(questionId, value)}
           />
         </div>
       </div>
