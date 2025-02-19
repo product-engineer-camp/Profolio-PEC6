@@ -13,15 +13,23 @@
 
 "use client";
 
-import { ThemeListHeader } from "@/widgets/ThemeListHeader";
 import { ThemeThumbnailListWithCheckbox } from "@/features/themes/ui/ThemeThumbnailListWithCheckbox";
-import { CheckedThemesProvider } from "@/src/features/themes/lib/CheckedThemeContext";
+import { DeleteThemeListActionHeader } from "@/src/features/themes/ui/DeleteThemeListActionHeader";
+import { useCheckedList } from "@/features/themes/lib/useCheckedList";
 
 export default function ThemeDeletePage() {
+  const { checkedIds, toggleSelection, hasCheckedItems } = useCheckedList();
+
   return (
-    <CheckedThemesProvider>
-      <ThemeListHeader variant="delete" />
-      <ThemeThumbnailListWithCheckbox />
-    </CheckedThemesProvider>
+    <>
+      <DeleteThemeListActionHeader
+        checkedThemeIds={checkedIds}
+        hasCheckedThemes={hasCheckedItems}
+      />
+      <ThemeThumbnailListWithCheckbox
+        checkedThemeIds={checkedIds}
+        onToggleCheck={toggleSelection}
+      />
+    </>
   );
 }
