@@ -3,7 +3,7 @@ import AuthButton from "@/features/auth/ui/AuthButton";
 import { ExternalLink } from "@/shared/ui/ExternalLink";
 import "@/application/globals.css";
 import { Logo } from "@/shared/ui/Logo";
-import { QueryProvider } from "@/shared/lib/providers/QueryProvider";
+import { QueryProvider } from "@/src/app/_provider/QueryProvider";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
