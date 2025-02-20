@@ -12,13 +12,13 @@ export function ShareKakaoButton({
   profileUrl,
   onClick,
 }: ShareKakaoButtonProps) {
-  const handleShare = async () => {
+  const handleShare = () => {
     if (window.Kakao === undefined) {
       return;
     }
 
     try {
-      await window.Kakao.Share.sendCustom({
+      window.Kakao.Share.sendCustom({
         templateId: Number(process.env.NEXT_PUBLIC_KAKAO_SHARE_TEMPLATE_ID),
         templateArgs: {
           USER_NAME: "홍길동",
