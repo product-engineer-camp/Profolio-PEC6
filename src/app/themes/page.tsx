@@ -12,12 +12,12 @@
 "use client";
 
 import { ThemeThumbnailList } from "@/entities/themes/ui/ThemeThumbnailList";
-import { ThemeListHeader } from "@/widgets/ThemeListHeader";
+import { DefaultThemeListActionHeader } from "@/features/themes/ui/DefaultThemeListActionHeader";
 
 export default function ThemeListPage() {
   return (
     <>
-      <ThemeListHeader variant="default" />
+      <DefaultThemeListActionHeader />
       <ThemeThumbnailList />
     </>
   );
