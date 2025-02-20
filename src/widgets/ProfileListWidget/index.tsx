@@ -21,7 +21,6 @@ export function ProfileListWidget({ initialProfiles }: ProfileListWidgetProps) {
       setIsLoading(true);
       setCurrentSort(option);
 
-      console.log("handleSort", option);
       const response = await getProfileList(option);
       setProfiles(response);
     } catch (error) {

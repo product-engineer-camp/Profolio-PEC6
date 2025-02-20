@@ -58,9 +58,18 @@ export function ProfileList({ profiles, currentSort }: ProfileListProps) {
             </CardContent>
             <CardFooter className="flex gap-2 pb-3 pt-1">
               <div className="grid w-full grid-cols-3 gap-2">
-                <ShareKakaoButton profileUrl={profileUrl} />
-                <ShareURLButton profileUrl={profileUrl} />
-                <ShareQRCodeButton profileUrl={profileUrl} />
+                <ShareKakaoButton
+                  profileUrl={profileUrl}
+                  profileId={profile.id}
+                />
+                <ShareURLButton
+                  profileUrl={profileUrl}
+                  profileId={profile.id}
+                />
+                <ShareQRCodeButton
+                  profileUrl={profileUrl}
+                  profileId={profile.id}
+                />
               </div>
             </CardFooter>
           </Card>
