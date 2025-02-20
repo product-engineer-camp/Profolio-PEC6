@@ -1,5 +1,3 @@
-import { useRouter } from "next/navigation";
-
 type DeleteProfileResponse = {
   success: boolean;
   error?: string;

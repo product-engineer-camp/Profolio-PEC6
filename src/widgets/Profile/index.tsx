@@ -38,11 +38,7 @@ export function Profile({ profile, profileUrl }: ProfileProps) {
     <Card className="mx-auto max-w-2xl">
       <CardHeader className="flex flex-row items-center justify-between">
         <ProfileTitle title={profile.title} />
-        <ProfileDropdownMenu
-          profileId={Number(profile.id)}
-          onDelete={handleDelete}
-          onCopy={handleCopy}
-        />
+        <ProfileDropdownMenu profileId={Number(profile.id)} />
       </CardHeader>
       <CardContent>
         <div className="flex flex-col items-center gap-4">
