@@ -1,3 +1,11 @@
+import CreateProfileProcess from "@/src/widgets/profile/ui";
+
 export default function CreateProfile() {
-  return <div>CreateProfile</div>;
+  return (
+    <div className="flex w-screen justify-center px-4">
+      <div className="w-full min-w-[330px] max-w-[600px]">
+        <CreateProfileProcess />
+      </div>
+    </div>
+  );
 }
