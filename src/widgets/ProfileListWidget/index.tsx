@@ -63,7 +63,7 @@ export function ProfileListWidget() {
           disabled={isLoading}
         />
       </div>
-      <ProfileList profiles={profiles} />
+      <ProfileList profiles={profiles} currentSort={currentSort} />
       <div ref={containerRef} />
       {isLoading && <LoadingSpinner />}
     </div>
