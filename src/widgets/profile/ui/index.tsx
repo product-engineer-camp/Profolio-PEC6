@@ -100,6 +100,8 @@ export default function CreateProfileProcess() {
     );
   }
 
+  console.log(profileInput.basicAnswers);
+
   return {
     1: (
       <QAStep
