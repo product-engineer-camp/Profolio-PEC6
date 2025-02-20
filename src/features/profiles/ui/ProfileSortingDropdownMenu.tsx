@@ -32,11 +32,10 @@ export function ProfileSortingDropdownMenu({
 
   return (
     <DropdownMenu onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild disabled={disabled}>
         <Button
           variant="ghost"
           size="sm"
-          disabled={disabled}
           className="flex items-center gap-1 text-muted-foreground hover:text-foreground"
         >
           {getCurrentLabel()}
