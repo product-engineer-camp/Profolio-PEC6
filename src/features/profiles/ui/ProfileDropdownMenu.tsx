@@ -8,32 +8,52 @@ import {
 } from "@/shared/ui/dropdown";
 import { MoreHorizontal, Pencil, Trash, Copy } from "lucide-react";
 import { Button } from "@/shared/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/shared/ui/dialog";
+import { ProfileDeleteConfirmDialog } from "./ProfileDeleteConfirmDialog";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { deleteProfile } from "../api/deleteProfile";
 
 type ProfileDropdownMenuProps = {
-  onDelete: () => Promise<void>;
-  onCopy: () => Promise<void>;
   profileId: number;
 };
 
-export function ProfileDropdownMenu({
-  onDelete,
-  onCopy,
-  profileId,
-}: ProfileDropdownMenuProps) {
+export function ProfileDropdownMenu({ profileId }: ProfileDropdownMenuProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const router = useRouter();
+
+  const handleDelete = async () => {
+    const { success, error } = await deleteProfile(profileId.toString());
+
+    if (success) {
+      router.push("/profiles");
+      router.refresh();
+    } else {
+      toast.error("프로필 삭제 중 오류가 발생했습니다.");
+      console.error(error);
+    }
+  };
+
+  const handleCopy = async () => {
+    try {
+      const response = await fetch(`/api/profiles/${profileId}/copy`, {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error("프로필 복사에 실패했습니다.");
+      }
+
+      toast.success("프로필이 복사되었습니다.");
+      router.refresh();
+    } catch (error) {
+      toast.error("프로필 복사 중 오류가 발생했습니다.");
+      console.error(error);
+    }
+  };
 
   const handleEdit = () => {
-    // TODO: 수정 페이지로 이동 구현
-    console.log("수정하기:", profileId);
+    router.push(`/profiles/${profileId}/edit`);
   };
 
   return (
@@ -53,34 +73,18 @@ export function ProfileDropdownMenu({
             <Pencil className="mr-2 h-4 w-4" />
             수정하기
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={onCopy}>
+          <DropdownMenuItem onClick={handleCopy}>
             <Copy className="mr-2 h-4 w-4" />
             복사하기
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>프로필 삭제</DialogTitle>
-            <DialogDescription>
-              정말로 이 프로필을 삭제하시겠습니까?
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setIsDeleteDialogOpen(false)}
-            >
-              아니오
-            </Button>
-            <Button variant="destructive" onClick={onDelete}>
-              예
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <ProfileDeleteConfirmDialog
+        isOpen={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+        onConfirm={handleDelete}
+      />
     </>
   );
 }

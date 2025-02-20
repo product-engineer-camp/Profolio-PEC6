@@ -20,6 +20,7 @@ export async function GET(
       .from("profile")
       .select("id, title, created_at, updated_at, share_count")
       .eq("id", profileId)
+      .is("deleted_at", null)
       .single();
 
     if (error) {
@@ -45,6 +46,43 @@ export async function GET(
     return NextResponse.json({ profile: formattedProfile });
   } catch (error) {
     console.error("Error fetching profile:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { profileId: string } },
+) {
+  try {
+    const supabase = await createClient();
+    const { profileId } = params;
+
+    if (!profileId) {
+      return NextResponse.json(
+        { error: "Profile ID is required" },
+        { status: 400 },
+      );
+    }
+
+    const { error } = await supabase
+      .from("profile")
+      .update({ deleted_at: new Date().toISOString() })
+      .eq("id", profileId);
+
+    if (error) {
+      return NextResponse.json(
+        { error: "Failed to delete profile" },
+        { status: 500 },
+      );
+    }
+
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (error) {
+    console.error("Error deleting profile:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },

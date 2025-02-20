@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const sort = (searchParams.get("sort") as SortOption) || "shares";
 
   try {
-    let query = supabase.from("profile").select("*");
+    let query = supabase.from("profile").select("*").is("deleted_at", null);
 
     // 정렬 조건 적용
     switch (sort) {
