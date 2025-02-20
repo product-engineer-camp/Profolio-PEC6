@@ -7,6 +7,7 @@ import { ShareURLButton } from "@/src/features/profiles/ui/ShareURLButton";
 import { ShareQRCodeButton } from "@/src/features/profiles/ui/ShareQRCodeButton";
 import { ProfileAvatar } from "@/entities/profiles/ui/ProfileAvatar";
 import { Card, CardContent, CardFooter, CardHeader } from "@/shared/ui/card";
+import { putShareCount } from "@/features/profiles/api/putShareCount";
 
 type ProfileProps = {
   profile: ProfileType;
@@ -22,6 +23,14 @@ export function Profile({ profile, profileUrl }: ProfileProps) {
   const handleCopy = async () => {
     // TODO: 복사 API 구현
     console.log("복사하기:", profile.id);
+  };
+
+  const handleShare = async () => {
+    try {
+      await putShareCount(profile.id);
+    } catch (error) {
+      console.error("공유 처리 중 오류 발생:", error);
+    }
   };
 
   return (
@@ -44,9 +53,9 @@ export function Profile({ profile, profileUrl }: ProfileProps) {
         </div>
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
-        <ShareKakaoButton profileUrl={profileUrl} />
-        <ShareURLButton profileUrl={profileUrl} />
-        <ShareQRCodeButton profileUrl={profileUrl} />
+        <ShareKakaoButton profileUrl={profileUrl} onClick={handleShare} />
+        <ShareURLButton profileUrl={profileUrl} onClick={handleShare} />
+        <ShareQRCodeButton profileUrl={profileUrl} onClick={handleShare} />
       </CardFooter>
     </Card>
   );
