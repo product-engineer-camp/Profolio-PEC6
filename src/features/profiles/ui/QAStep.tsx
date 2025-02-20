@@ -26,40 +26,48 @@ export const QAStep = ({
   const currentQuestion = questions[currentQuestionIndex];
 
   if (isLoading) {
-    return <div className="text-center">질문을 불러오는 중...</div>;
+    return (
+      <div className="flex h-[400px] w-full items-center justify-center bg-background">
+        질문을 불러오는 중...
+      </div>
+    );
   }
 
   if (!currentQuestion) {
-    return <div className="text-center">질문이 없습니다.</div>;
+    return (
+      <div className="flex h-[400px] w-full items-center justify-center bg-background">
+        질문이 없습니다.
+      </div>
+    );
   }
 
   return (
-    <div className="w-full space-y-6">
+    <div className="flex flex-col">
       <ProgressBar current={currentQuestionIndex} total={questions.length} />
 
-      <div className="w-full space-y-4">
-        <h2 className="text-xl font-semibold">{currentQuestion.question}</h2>
-        <div className="w-full space-y-4">
-          <QuestionInput
-            question={currentQuestion}
-            value={answers[currentQuestion.id]}
-            onChange={(questionId, value) => onAnswer(questionId, value)}
-          />
-        </div>
-      </div>
+      <div className="mt-6 flex flex-1 flex-col gap-4">
+        <h2 className="break-words text-xl font-semibold">
+          {currentQuestion.question}
+        </h2>
+        <QuestionInput
+          question={currentQuestion}
+          value={answers[currentQuestion.id]}
+          onChange={(questionId, value) => onAnswer(questionId, value)}
+        />
 
-      <div className="flex gap-4">
-        <Button
-          variant="outline"
-          onClick={onPrevious}
-          disabled={currentQuestionIndex === 0}
-          className="flex-1 font-bold"
-        >
-          이전
-        </Button>
-        <Button onClick={onNext} className="flex-1 font-bold">
-          {currentQuestionIndex === questions.length - 1 ? "완료" : "다음"}
-        </Button>
+        <div className="flex gap-4">
+          <Button
+            variant="outline"
+            onClick={onPrevious}
+            disabled={currentQuestionIndex === 0}
+            className="flex-1 font-bold"
+          >
+            이전
+          </Button>
+          <Button onClick={onNext} className="flex-1 font-bold">
+            {currentQuestionIndex === questions.length - 1 ? "완료" : "다음"}
+          </Button>
+        </div>
       </div>
     </div>
   );
