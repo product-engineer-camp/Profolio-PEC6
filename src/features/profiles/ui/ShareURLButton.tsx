@@ -7,17 +7,17 @@ import { putShareCount } from "../api/putShareCount";
 
 type ShareURLButtonProps = {
   profileUrl: string;
-  profileId: string;
+  onClick: () => void;
 };
 
-export function ShareURLButton({ profileUrl, profileId }: ShareURLButtonProps) {
+export function ShareURLButton({ profileUrl, onClick }: ShareURLButtonProps) {
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(profileUrl);
-      await putShareCount(profileId);
+      onClick();
       toast("URL이 복사되었습니다.");
     } catch (error) {
-      console.error("Failed to copy URL or update share count:", error);
+      console.error("Failed to copy URL:", error);
       toast.error("URL 복사에 실패했습니다.");
     }
   };

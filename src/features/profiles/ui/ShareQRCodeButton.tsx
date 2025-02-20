@@ -8,21 +8,21 @@ import { putShareCount } from "../api/putShareCount";
 
 type ShareQRCodeButtonProps = {
   profileUrl: string;
-  profileId: string;
+  onClick: () => void;
 };
 
 export function ShareQRCodeButton({
   profileUrl,
-  profileId,
+  onClick,
 }: ShareQRCodeButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleShare = async () => {
     try {
       setIsModalOpen(true);
-      await putShareCount(profileId);
+      onClick(); // QR 코드 모달 표시 후 공유 카운트 증가
     } catch (error) {
-      console.error("Failed to update share count:", error);
+      console.error("Failed to show QR code:", error);
     }
   };
 

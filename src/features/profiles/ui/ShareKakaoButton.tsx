@@ -6,12 +6,12 @@ import { putShareCount } from "../api/putShareCount";
 
 type ShareKakaoButtonProps = {
   profileUrl: string;
-  profileId: string;
+  onClick: () => void;
 };
 
 export function ShareKakaoButton({
   profileUrl,
-  profileId,
+  onClick,
 }: ShareKakaoButtonProps) {
   const handleShare = async () => {
     if (window.Kakao === undefined) {
@@ -19,16 +19,15 @@ export function ShareKakaoButton({
     }
 
     try {
-      // window.Kakao.Share.sendCustom({
-      //   templateId: Number(process.env.NEXT_PUBLIC_KAKAO_SHARE_TEMPLATE_ID),
-      //   templateArgs: {
-      //     USER_NAME: "홍길동",
-      //   },
-      // });
-      console.log("profileId", profileId);
-      await putShareCount(profileId);
+      await window.Kakao.Share.sendCustom({
+        templateId: Number(process.env.NEXT_PUBLIC_KAKAO_SHARE_TEMPLATE_ID),
+        templateArgs: {
+          USER_NAME: "홍길동",
+        },
+      });
+      onClick();
     } catch (error) {
-      console.error("Failed to share or update share count:", error);
+      console.error("Failed to share:", error);
     }
   };
 

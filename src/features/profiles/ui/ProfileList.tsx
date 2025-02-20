@@ -13,6 +13,7 @@ import { ProfileTitle } from "@/entities/profiles/ui/ProfileTitle";
 import { ShareKakaoButton } from "@/features/profiles/ui/ShareKakaoButton";
 import { ShareURLButton } from "@/features/profiles/ui/ShareURLButton";
 import { ShareQRCodeButton } from "@/features/profiles/ui/ShareQRCodeButton";
+import { putShareCount } from "../api/putShareCount";
 
 type ProfileListProps = {
   profiles: Profile[];
@@ -23,6 +24,14 @@ export function ProfileList({ profiles, currentSort }: ProfileListProps) {
   if (!profiles || !Array.isArray(profiles)) {
     return <div>프로필을 불러올 수 없습니다.</div>;
   }
+
+  const handleShare = async (profileId: string) => {
+    try {
+      await putShareCount(profileId);
+    } catch (error) {
+      console.error("공유 처리 중 오류 발생:", error);
+    }
+  };
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -60,15 +69,15 @@ export function ProfileList({ profiles, currentSort }: ProfileListProps) {
               <div className="grid w-full grid-cols-3 gap-2">
                 <ShareKakaoButton
                   profileUrl={profileUrl}
-                  profileId={profile.id}
+                  onClick={() => handleShare(profile.id)}
                 />
                 <ShareURLButton
                   profileUrl={profileUrl}
-                  profileId={profile.id}
+                  onClick={() => handleShare(profile.id)}
                 />
                 <ShareQRCodeButton
                   profileUrl={profileUrl}
-                  profileId={profile.id}
+                  onClick={() => handleShare(profile.id)}
                 />
               </div>
             </CardFooter>
