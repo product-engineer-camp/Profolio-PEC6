@@ -8,6 +8,7 @@ import { ShareQRCodeButton } from "@/src/features/profiles/ui/ShareQRCodeButton"
 import { ProfileAvatar } from "@/entities/profiles/ui/ProfileAvatar";
 import { Card, CardContent, CardFooter, CardHeader } from "@/shared/ui/card";
 import { putShareCount } from "@/features/profiles/api/putShareCount";
+import { ProfileTitle } from "@/entities/profiles/ui/ProfileTitle";
 
 type ProfileProps = {
   profile: ProfileType;
@@ -36,7 +37,7 @@ export function Profile({ profile, profileUrl }: ProfileProps) {
   return (
     <Card className="mx-auto max-w-2xl">
       <CardHeader className="flex flex-row items-center justify-between">
-        <h1 className="text-2xl font-bold">{profile.title}</h1>
+        <ProfileTitle title={profile.title} />
         <ProfileDropdownMenu
           profileId={profile.id}
           onDelete={handleDelete}
@@ -45,11 +46,7 @@ export function Profile({ profile, profileUrl }: ProfileProps) {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col items-center gap-4">
-          <ProfileAvatar profileUrl={profile.profileUrl} />
-          <div
-            className="prose w-full max-w-none"
-            dangerouslySetInnerHTML={{ __html: profile.content }}
-          />
+          <p>프로필의 컨텐츠가 들어갑니다. </p>
         </div>
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
