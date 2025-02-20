@@ -2,23 +2,33 @@
 
 import { Button } from "@/shared/ui/button";
 import Image from "next/image";
+import { putShareCount } from "../api/putShareCount";
 
 type ShareKakaoButtonProps = {
   profileUrl: string;
+  onClick: () => void;
 };
 
-export function ShareKakaoButton({ profileUrl }: ShareKakaoButtonProps) {
-  const handleShare = () => {
+export function ShareKakaoButton({
+  profileUrl,
+  onClick,
+}: ShareKakaoButtonProps) {
+  const handleShare = async () => {
     if (window.Kakao === undefined) {
       return;
     }
 
-    window.Kakao.Share.sendCustom({
-      templateId: Number(process.env.NEXT_PUBLIC_KAKAO_SHARE_TEMPLATE_ID),
-      templateArgs: {
-        USER_NAME: "홍길동",
-      },
-    });
+    try {
+      await window.Kakao.Share.sendCustom({
+        templateId: Number(process.env.NEXT_PUBLIC_KAKAO_SHARE_TEMPLATE_ID),
+        templateArgs: {
+          USER_NAME: "홍길동",
+        },
+      });
+      onClick();
+    } catch (error) {
+      console.error("Failed to share:", error);
+    }
   };
 
   return (
