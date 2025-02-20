@@ -4,7 +4,6 @@ import { Button } from "@/shared/ui/button";
 import { QrCode } from "lucide-react";
 import { useState } from "react";
 import { QRCodeModal } from "../../../entities/profiles/ui/QRCodeModal";
-import { putShareCount } from "../api/putShareCount";
 
 type ShareQRCodeButtonProps = {
   profileUrl: string;

@@ -3,7 +3,6 @@
 import { Button } from "@/shared/ui/button";
 import { Link } from "lucide-react";
 import { toast } from "sonner";
-import { putShareCount } from "../api/putShareCount";
 
 type ShareURLButtonProps = {
   profileUrl: string;

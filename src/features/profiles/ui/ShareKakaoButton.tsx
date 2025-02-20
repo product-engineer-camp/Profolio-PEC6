@@ -2,7 +2,6 @@
 
 import { Button } from "@/shared/ui/button";
 import Image from "next/image";
-import { putShareCount } from "../api/putShareCount";
 
 type ShareKakaoButtonProps = {
   profileUrl: string;
