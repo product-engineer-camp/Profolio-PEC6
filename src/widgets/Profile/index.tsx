@@ -39,7 +39,7 @@ export function Profile({ profile, profileUrl }: ProfileProps) {
       <CardHeader className="flex flex-row items-center justify-between">
         <ProfileTitle title={profile.title} />
         <ProfileDropdownMenu
-          profileId={profile.id}
+          profileId={Number(profile.id)}
           onDelete={handleDelete}
           onCopy={handleCopy}
         />
