@@ -5,16 +5,16 @@ import { ProfilePreviewStep } from "@/features/profiles/ui/ProfilePreviewStep";
 import { LoadingView } from "@/src/shared/ui/LoadingView";
 import { ErrorView } from "@/src/shared/ui/ErrorView";
 import { Button } from "@/shared/ui/button";
-import { useProfileSteps } from "../model/useProfileSteps";
+import { useProfileCreateStep } from "../model/useProfileCreateStep";
+import { useQAFlow } from "@/src/features/profiles/model/useQAFlow";
 import { useProfileData } from "../model/useProfileData";
 import { ProfileQuestionAnswer } from "@/src/features/profiles/model/type";
 import { useAIGenerateQuestions } from "@/src/features/profiles/model/useAIGenerateQuestions";
 import { useAnswers } from "@/features/profiles/model/useAnswers";
 import { useBasicQuestions } from "@/src/entities/profiles/model/useBasicQuestions";
-import { useStepNavigation } from "@/src/shared/model/useStepNavigation";
 
 export default function CreateProfileProcess() {
-  const { currentStep, updateStep } = useProfileSteps();
+  const { currentStep, updateStep } = useProfileCreateStep();
   const { profileInput, updateBasicAnswers, updateAIAnswers } =
     useProfileData();
   const { data: basicQuestionsData, isLoading: isLoadingBasicQuestions } =
@@ -48,14 +48,14 @@ export default function CreateProfileProcess() {
     updateStep(3);
   };
 
-  const basicNavigation = useStepNavigation({
+  const basicNavigation = useQAFlow({
     totalSteps: basicQuestionsData?.questions.length || 0,
     onComplete: () => {
       handleBasicQAComplete(basicAnswers);
     },
   });
 
-  const aiNavigation = useStepNavigation({
+  const aiNavigation = useQAFlow({
     totalSteps: aiGeneratedQuestions.length,
     onComplete: () => {
       handleAIQAComplete(aiAnswers);
@@ -107,7 +107,7 @@ export default function CreateProfileProcess() {
       <QAStep
         questions={basicQuestionsData?.questions || []}
         isLoading={isLoadingBasicQuestions}
-        currentQuestionIndex={basicNavigation.currentStep}
+        currentQuestionIndex={basicNavigation.currentQAIndex}
         answers={basicAnswers}
         onAnswer={handleBasicAnswer}
         onNext={basicNavigation.handleNext}
@@ -117,7 +117,7 @@ export default function CreateProfileProcess() {
     2: (
       <QAStep
         questions={aiGeneratedQuestions}
-        currentQuestionIndex={aiNavigation.currentStep}
+        currentQuestionIndex={aiNavigation.currentQAIndex}
         answers={aiAnswers}
         onAnswer={handleAIAnswer}
         onNext={aiNavigation.handleNext}

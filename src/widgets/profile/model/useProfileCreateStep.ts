@@ -1,6 +1,6 @@
 import { useSearchParams, useRouter } from "next/navigation";
 
-export const useProfileSteps = () => {
+export const useProfileCreateStep = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentStep = Number(searchParams.get("step")) || 1;
