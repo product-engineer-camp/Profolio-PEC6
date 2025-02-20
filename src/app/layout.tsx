@@ -1,6 +1,5 @@
 import { GeistSans } from "geist/font/sans";
 import AuthButton from "@/features/auth/ui/AuthButton";
-import { ExternalLink } from "@/shared/ui/ExternalLink";
 import "@/application/globals.css";
 import { Logo } from "@/shared/ui/Logo";
 import Link from "next/link";
