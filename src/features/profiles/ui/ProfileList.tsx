@@ -39,14 +39,12 @@ export function ProfileList({ profiles, currentSort }: ProfileListProps) {
     <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {profiles.map((profile) => {
         const profileUrl = `${process.env.NEXT_PUBLIC_URL}/profiles/${profile.id}`;
-
         return (
-          <Link
-            href={`/profiles/${profile.id}`}
+          <Card
+            className="w-full min-w-[125px] cursor-pointer transition-shadow hover:shadow-lg"
             key={profile.id}
-            className="block"
           >
-            <Card className="w-full min-w-[125px] cursor-pointer transition-shadow hover:shadow-lg">
+            <Link href={`/profiles/${profile.id}`} className="block">
               <CardHeader className="pb-1 pt-3">
                 <CardTitle className="text-left font-medium">
                   <ProfileTitle title={profile.title} />
@@ -69,24 +67,24 @@ export function ProfileList({ profiles, currentSort }: ProfileListProps) {
                   </span>
                 )}
               </CardContent>
-              <CardFooter className="flex gap-2 pb-3 pt-1">
-                <div className="grid w-full grid-cols-3 gap-2">
-                  <ShareKakaoButton
-                    profileUrl={profileUrl}
-                    onClick={() => handleShare(profile.id)}
-                  />
-                  <ShareURLButton
-                    profileUrl={profileUrl}
-                    onClick={() => handleShare(profile.id)}
-                  />
-                  <ShareQRCodeButton
-                    profileUrl={profileUrl}
-                    onClick={() => handleShare(profile.id)}
-                  />
-                </div>
-              </CardFooter>
-            </Card>
-          </Link>
+            </Link>
+            <CardFooter className="flex gap-2 pb-3 pt-1">
+              <div className="grid w-full grid-cols-3 gap-2">
+                <ShareKakaoButton
+                  profileUrl={profileUrl}
+                  onClick={() => handleShare(profile.id)}
+                />
+                <ShareURLButton
+                  profileUrl={profileUrl}
+                  onClick={() => handleShare(profile.id)}
+                />
+                <ShareQRCodeButton
+                  profileUrl={profileUrl}
+                  onClick={() => handleShare(profile.id)}
+                />
+              </div>
+            </CardFooter>
+          </Card>
         );
       })}
     </div>
