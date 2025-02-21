@@ -16,16 +16,6 @@ type ProfileProps = {
 };
 
 export function Profile({ profile, profileUrl }: ProfileProps) {
-  const handleDelete = async () => {
-    // TODO: 삭제 API 구현
-    console.log("삭제하기:", profile.id);
-  };
-
-  const handleCopy = async () => {
-    // TODO: 복사 API 구현
-    console.log("복사하기:", profile.id);
-  };
-
   const handleShare = async () => {
     try {
       await putShareCount(profile.id);
