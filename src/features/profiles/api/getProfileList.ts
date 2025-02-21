@@ -1,35 +1,29 @@
 import { Profile } from "@/entities/profiles/model/type";
-import { SortOption } from "@/features/profiles/model/type";
-import { generateMockProfiles, delay } from "@/shared/lib/mockData";
+import type { SortOption } from "@/features/profiles/model/type";
 
 export async function getProfileList(
-  page: number,
-  sort: SortOption,
+  sort: SortOption = "latest",
 ): Promise<Profile[]> {
-  // 실제 API 호출처럼 지연 시간 추가
-  await delay(1000);
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/profiles`,
+    );
 
-  // 최대 5페이지까지만 데이터 제공
-  if (page > 5) return [];
+    if (!response.ok) {
+      throw new Error("Failed to fetch profiles");
+    }
 
-  const profiles = generateMockProfiles(page);
+    const data = await response.json();
 
-  // 정렬 옵션에 따라 데이터 정렬
-  switch (sort) {
-    case "latest":
-      return profiles.sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-      );
-    case "shares":
-      // 임의의 공유 수를 생성하여 정렬
-      return profiles.sort(() => Math.random() - 0.5);
-    case "updated":
-      return profiles.sort(
-        (a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
-      );
-    default:
-      return profiles;
+    // 응답이 배열인지 확인
+    if (!Array.isArray(data)) {
+      // data.profiles와 같은 형태로 오는 경우를 처리
+      return Array.isArray(data.profiles) ? data.profiles : [];
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching profiles:", error);
+    return [];
   }
 }
