@@ -22,9 +22,17 @@ export const useProfileData = () => {
     }));
   };
 
+  const updateThemeId = (themeId: string) => {
+    setProfileInput((prev) => ({
+      ...prev,
+      themeId,
+    }));
+  };
+
   return {
     profileInput,
     updateBasicAnswers,
     updateAIAnswers,
+    updateThemeId,
   };
 };

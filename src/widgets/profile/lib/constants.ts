@@ -14,6 +14,7 @@ export const INITIAL_PROFILE_INPUT: ProfileInputType = {
     "6d34e66c-d676-42c0-a7db-8d10e6248390": "dating",
   },
   aiAnswers: {},
+  themeId: null,
   preview: {
     title: "",
     description: "",
