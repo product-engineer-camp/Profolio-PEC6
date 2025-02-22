@@ -1,19 +1,35 @@
 import { useState, useCallback } from "react";
 
-export const useCheckedList = () => {
+type SelectionMode = "single" | "multiple";
+
+type UseCheckedListProps = {
+  mode?: SelectionMode;
+};
+
+export const useCheckedList = ({ mode = "multiple" }: UseCheckedListProps) => {
   const [checkedIds, setCheckedIds] = useState<Set<number>>(new Set());
 
-  const toggleSelection = useCallback((id: number) => {
-    setCheckedIds((prevIds) => {
-      const newSet = new Set(prevIds);
-      if (newSet.has(id)) {
-        newSet.delete(id);
-      } else {
-        newSet.add(id);
-      }
-      return newSet;
-    });
-  }, []);
+  const toggleSelection = useCallback(
+    (id: number) => {
+      setCheckedIds((prevIds) => {
+        if (mode === "single") {
+          if (prevIds.has(id)) {
+            return new Set();
+          }
+          return new Set([id]);
+        }
+
+        const newSet = new Set(prevIds);
+        if (newSet.has(id)) {
+          newSet.delete(id);
+        } else {
+          newSet.add(id);
+        }
+        return newSet;
+      });
+    },
+    [mode],
+  );
 
   const clearChecked = useCallback(() => {
     setCheckedIds(new Set());

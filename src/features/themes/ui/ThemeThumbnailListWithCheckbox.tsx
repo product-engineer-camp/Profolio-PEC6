@@ -7,10 +7,12 @@ import { ThemeThumbnailCardWithCheckbox } from "./ThemeThumbnailCardWithCheckbox
 
 type ThemeThumbnailListWithCheckboxProps = {
   onToggleCheck: (id: number) => void;
+  checkedIds?: string[];
 };
 
 export const ThemeThumbnailListWithCheckbox = ({
   onToggleCheck,
+  checkedIds = [],
 }: ThemeThumbnailListWithCheckboxProps) => {
   const { ref, inView } = useInView();
   const {
@@ -42,6 +44,7 @@ export const ThemeThumbnailListWithCheckbox = ({
             key={theme.id}
             {...theme}
             onToggleCheck={onToggleCheck}
+            isChecked={checkedIds.includes(String(theme.id))}
           />
         )),
       )}

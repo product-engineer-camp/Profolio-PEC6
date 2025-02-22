@@ -7,17 +7,23 @@ import { Checkbox } from "@/shared/ui/checkbox";
 
 type ThemeThumbnailCardWithCheckboxProps = ThemeThumbnailCardProps & {
   onToggleCheck: (id: number) => void;
+  isChecked: boolean;
 };
 
 export const ThemeThumbnailCardWithCheckbox = memo(
   ({
     id,
     onToggleCheck,
+    isChecked,
     ...themeProps
   }: ThemeThumbnailCardWithCheckboxProps) => {
     return (
       <div className="flex items-center gap-4">
-        <Checkbox id={`theme-${id}`} onClick={() => onToggleCheck(id)} />
+        <Checkbox
+          id={`theme-${id}`}
+          checked={isChecked}
+          onCheckedChange={() => onToggleCheck(id)}
+        />
         <div className="flex-1">
           <ThemeThumbnailCard id={id} {...themeProps} />
         </div>
