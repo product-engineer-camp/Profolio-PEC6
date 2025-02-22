@@ -1,4 +1,4 @@
-export async function putShareCount(profileId: string): Promise<void> {
+export async function putShareCount(profileId: number): Promise<void> {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/profiles/share/${profileId}`,

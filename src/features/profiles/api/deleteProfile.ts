@@ -4,7 +4,7 @@ type DeleteProfileResponse = {
 };
 
 export async function deleteProfile(
-  profileId: string,
+  profileId: number,
 ): Promise<DeleteProfileResponse> {
   try {
     const response = await fetch(`/api/profiles/${profileId}`, {

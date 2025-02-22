@@ -3,11 +3,11 @@ import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { profileId: string } },
+  context: { params: Promise<{ profileId: string }> },
 ) {
   try {
     const supabase = await createClient();
-    const { profileId } = params;
+    const { profileId } = await context.params;
 
     if (!profileId) {
       return NextResponse.json(
@@ -55,11 +55,11 @@ export async function GET(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { profileId: string } },
+  context: { params: Promise<{ profileId: string }> },
 ) {
   try {
     const supabase = await createClient();
-    const { profileId } = params;
+    const { profileId } = await context.params;
 
     if (!profileId) {
       return NextResponse.json(

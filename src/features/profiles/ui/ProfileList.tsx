@@ -26,7 +26,7 @@ export function ProfileList({ profiles, currentSort }: ProfileListProps) {
     return <div>프로필을 불러올 수 없습니다.</div>;
   }
 
-  const handleShare = async (profileId: string) => {
+  const handleShare = async (profileId: number) => {
     try {
       await putShareCount(profileId);
     } catch (error) {

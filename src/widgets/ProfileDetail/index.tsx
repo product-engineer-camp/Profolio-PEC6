@@ -10,13 +10,13 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/shared/ui/card";
 import { putShareCount } from "@/features/profiles/api/putShareCount";
 import { ProfileTitle } from "@/entities/profiles/ui/ProfileTitle";
 
-type ProfileProps = {
+type ProfileDetailProps = {
   profile: ProfileType;
   profileUrl: string;
 };
 
-export function Profile({ profile, profileUrl }: ProfileProps) {
-  const handleShare = async () => {
+export function ProfileDetail({ profile, profileUrl }: ProfileDetailProps) {
+  const handleShareCount = async () => {
     try {
       await putShareCount(profile.id);
     } catch (error) {
@@ -28,7 +28,7 @@ export function Profile({ profile, profileUrl }: ProfileProps) {
     <Card className="mx-auto max-w-2xl">
       <CardHeader className="flex flex-row items-center justify-between">
         <ProfileTitle title={profile.title} />
-        <ProfileDropdownMenu profileId={Number(profile.id)} />
+        <ProfileDropdownMenu profileId={profile.id} />
       </CardHeader>
       <CardContent>
         <div className="flex flex-col items-center gap-4">
@@ -36,9 +36,9 @@ export function Profile({ profile, profileUrl }: ProfileProps) {
         </div>
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
-        <ShareKakaoButton profileUrl={profileUrl} onClick={handleShare} />
-        <ShareURLButton profileUrl={profileUrl} onClick={handleShare} />
-        <ShareQRCodeButton profileUrl={profileUrl} onClick={handleShare} />
+        <ShareKakaoButton profileUrl={profileUrl} onClick={handleShareCount} />
+        <ShareURLButton profileUrl={profileUrl} onClick={handleShareCount} />
+        <ShareQRCodeButton profileUrl={profileUrl} onClick={handleShareCount} />
       </CardFooter>
     </Card>
   );

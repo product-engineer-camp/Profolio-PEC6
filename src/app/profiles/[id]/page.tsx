@@ -1,5 +1,5 @@
 import { getProfile } from "@/entities/profiles/api/getProfile";
-import { Profile } from "@/widgets/Profile";
+import { ProfileDetail } from "@/src/widgets/ProfileDetail";
 
 type ProfileDetailPageProps = {
   params: {
@@ -21,7 +21,7 @@ export default async function ProfileDetailPage({
 
   return (
     <div className="py-5">
-      <Profile profile={profile} profileUrl={profileUrl} />
+      <ProfileDetail profile={profile} profileUrl={profileUrl} />
     </div>
   );
 }

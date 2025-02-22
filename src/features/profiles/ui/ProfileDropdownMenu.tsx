@@ -23,7 +23,7 @@ export function ProfileDropdownMenu({ profileId }: ProfileDropdownMenuProps) {
   const router = useRouter();
 
   const handleDelete = async () => {
-    const { success, error } = await deleteProfile(profileId.toString());
+    const { success, error } = await deleteProfile(profileId);
 
     if (success) {
       router.push("/profiles");
