@@ -1,25 +1,25 @@
-import { useProfileCreateStep } from "@/src/widgets/profile/model/useProfileCreateStep";
-import { useProfileData } from "@/src/widgets/profile/model/useProfileData";
 import { Button } from "@/shared/ui/button";
 import { ThemeThumbnailListWithCheckbox } from "./ThemeThumbnailListWithCheckbox";
 import { useCheckedList } from "../lib/useCheckedList";
 
-export const ThemeSelectStep = () => {
-  const { updateStep } = useProfileCreateStep();
-  const { updateThemeId } = useProfileData();
+type ThemeSelectStepProps = {
+  onSelect: (themeId: string) => void;
+  selectedThemeId?: string | null;
+};
+
+export const ThemeSelectStep = ({
+  onSelect,
+  selectedThemeId,
+}: ThemeSelectStepProps) => {
   const { checkedIds, toggleSelection, hasCheckedItems } = useCheckedList({
     mode: "single",
+    initialChecked: selectedThemeId ? [Number(selectedThemeId)] : [],
   });
 
-  const handleNext = () => {
-    if (hasCheckedItems) {
-      updateThemeId(checkedIds[0]);
-      updateStep(4);
+  const handleSelect = () => {
+    if (hasCheckedItems && checkedIds.length > 0) {
+      onSelect(checkedIds[0]);
     }
-  };
-
-  const handlePrevious = () => {
-    updateStep(2);
   };
 
   return (
@@ -38,12 +38,9 @@ export const ThemeSelectStep = () => {
         />
       </div>
 
-      <div className="flex justify-between">
-        <Button variant="outline" onClick={handlePrevious}>
-          이전
-        </Button>
-        <Button onClick={handleNext} disabled={!hasCheckedItems}>
-          다음
+      <div className="flex justify-end">
+        <Button onClick={handleSelect} disabled={!hasCheckedItems}>
+          선택 완료
         </Button>
       </div>
     </div>

@@ -23,10 +23,15 @@ export const useProfileData = () => {
   };
 
   const updateThemeId = (themeId: string) => {
-    setProfileInput((prev) => ({
-      ...prev,
-      themeId,
-    }));
+    setProfileInput((prev) => {
+      console.log("Previous state:", prev);
+      const newState = {
+        ...prev,
+        themeId,
+      };
+      console.log("New state:", newState);
+      return newState;
+    });
   };
 
   return {

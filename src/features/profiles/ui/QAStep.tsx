@@ -8,7 +8,11 @@ type QAStepProps = {
   questions: Question[];
   currentQuestionIndex: number;
   answers: ProfileQuestionAnswer;
-  onAnswer: (questionId: string, answer: QuestionValue) => void;
+  onAnswer: (
+    questionId: string,
+    answer: QuestionValue,
+    questions: Question[],
+  ) => void;
   onNext: () => void;
   onPrevious: () => void;
   isLoading?: boolean;
@@ -41,6 +45,9 @@ export const QAStep = ({
     );
   }
 
+  const currentAnswer =
+    answers.find((a) => a.question === currentQuestion.question)?.answer || "";
+
   return (
     <div className="flex flex-col">
       <ProgressBar current={currentQuestionIndex} total={questions.length} />
@@ -51,8 +58,10 @@ export const QAStep = ({
         </h2>
         <QuestionInput
           question={currentQuestion}
-          value={answers[currentQuestion.id]}
-          onChange={(questionId, value) => onAnswer(questionId, value)}
+          value={currentAnswer}
+          onChange={(questionId, value) =>
+            onAnswer(questionId, value, questions)
+          }
         />
 
         <div className="flex gap-4">

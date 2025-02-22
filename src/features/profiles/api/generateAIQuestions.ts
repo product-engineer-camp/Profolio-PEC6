@@ -1,7 +1,7 @@
 import { ProfileQuestionAnswer } from "../model/type";
-import { Question } from "@/src/entities/profiles/api/type";
 import { generateAIQuestionsPrompt } from "../model/generateAIQuestionsPrompt";
 import { generatedAIQuestionsFormatter } from "../model/generatedAIQuestionsFormatter";
+import { Question } from "@/src/entities/profiles/api/type";
 
 type GenerateAIQuestionsResponse = {
   questions: Question[];
@@ -26,6 +26,5 @@ export const generateAIQuestions = async (
 
   const data = await response.json();
   const questions = generatedAIQuestionsFormatter(data.content);
-
   return { questions };
 };

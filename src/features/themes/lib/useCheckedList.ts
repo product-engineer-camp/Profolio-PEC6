@@ -4,10 +4,16 @@ type SelectionMode = "single" | "multiple";
 
 type UseCheckedListProps = {
   mode?: SelectionMode;
+  initialChecked?: number[];
 };
 
-export const useCheckedList = ({ mode = "multiple" }: UseCheckedListProps) => {
-  const [checkedIds, setCheckedIds] = useState<Set<number>>(new Set());
+export const useCheckedList = ({
+  mode = "multiple",
+  initialChecked = [],
+}: UseCheckedListProps) => {
+  const [checkedIds, setCheckedIds] = useState<Set<number>>(
+    new Set(initialChecked),
+  );
 
   const toggleSelection = useCallback(
     (id: number) => {
@@ -16,15 +22,18 @@ export const useCheckedList = ({ mode = "multiple" }: UseCheckedListProps) => {
           if (prevIds.has(id)) {
             return new Set();
           }
+
           return new Set([id]);
         }
 
         const newSet = new Set(prevIds);
+
         if (newSet.has(id)) {
           newSet.delete(id);
         } else {
           newSet.add(id);
         }
+
         return newSet;
       });
     },
@@ -34,6 +43,7 @@ export const useCheckedList = ({ mode = "multiple" }: UseCheckedListProps) => {
   const clearChecked = useCallback(() => {
     setCheckedIds(new Set());
   }, []);
+
   return {
     checkedIds: Array.from(checkedIds).map(String),
     toggleSelection,

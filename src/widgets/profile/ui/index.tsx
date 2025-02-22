@@ -15,7 +15,7 @@ import { useBasicQuestions } from "@/src/entities/profiles/model/useBasicQuestio
 
 export default function CreateProfileProcess() {
   const { currentStep, updateStep } = useProfileCreateStep();
-  const { profileInput, updateBasicAnswers, updateAIAnswers } =
+  const { profileInput, updateBasicAnswers, updateAIAnswers, updateThemeId } =
     useProfileData();
   const { data: basicQuestionsData, isLoading: isLoadingBasicQuestions } =
     useBasicQuestions();
@@ -61,6 +61,12 @@ export default function CreateProfileProcess() {
       handleAIQAComplete(aiAnswers);
     },
   });
+
+  const handleThemeSelect = (themeId: string) => {
+    console.log("CreateProfileProcess - Selected theme:", themeId);
+    updateThemeId(themeId);
+    updateStep(4);
+  };
 
   if (isGeneratingQuestions) {
     return (
@@ -122,7 +128,12 @@ export default function CreateProfileProcess() {
         onPrevious={aiNavigation.handlePrevious}
       />
     ),
-    3: <ThemeSelectStep />,
+    3: (
+      <ThemeSelectStep
+        onSelect={handleThemeSelect}
+        selectedThemeId={profileInput.themeId}
+      />
+    ),
     4: <ProfilePreviewStep />,
   }[currentStep];
 }
