@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useThemeDetail } from "@/entities/themes/model/useThemeDetail";
 import { useUploadProfileImage } from "../model/useUploadProfileImage";
 import { useCreateProfile } from "../model/useCreateProfile";
-import { createClient } from "@/shared/utils/supabase/client";
+import { useAuth } from "@/shared/model/auth/useAuth";
 import { Button } from "@/shared/ui/button";
 import { LoadingSpinner } from "@/shared/ui/LoadingSpinner";
 import { ErrorMessage } from "@/shared/ui/ErrorMessage";
@@ -14,7 +13,14 @@ import { Card } from "@/shared/ui/card";
 import { Label } from "@/shared/ui/label";
 import { Input } from "@/shared/ui/input";
 import { toast } from "sonner";
-import { ProfileInputType } from "@/src/features/profiles/model/type";
+import { ProfileInputType } from "../model/type";
+import { QuestionList } from "@/entities/profiles/ui/QuestionList";
+import { ProfileImageUploader } from "./ProfileImageUploader";
+import {
+  transformBasicAnswersToPayload,
+  transformAIAnswersToQuestions,
+} from "../model/formatProfileInput";
+
 type ProfilePreviewStepProps = {
   profileInput: ProfileInputType;
 };
@@ -25,9 +31,8 @@ export const ProfilePreviewStep = ({
   const router = useRouter();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [title, setTitle] = useState("");
+  const { isAuthenticated, isCheckingAuth } = useAuth();
 
   const { mutate: uploadImage, isPending: isUploading } =
     useUploadProfileImage();
@@ -36,50 +41,17 @@ export const ProfilePreviewStep = ({
     Number(profileInput.themeId),
   );
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const supabase = createClient();
-      const {
-        data: { user },
-        error,
-      } = await supabase.auth.getUser();
-      setIsAuthenticated(!!user && !error);
-      setIsCheckingAuth(false);
-    };
-
-    checkAuth();
-  }, []);
-
-  useEffect(() => {
-    if (imageFile) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(imageFile);
-    }
-  }, [imageFile]);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-    }
-  };
-
   const handleLogin = () => {
     router.push("/auth/login");
   };
 
   const handleSubmit = async () => {
     try {
-      // 이미지 업로드 (선택적)
       uploadImage(
         { file: imageFile || undefined },
         {
           onSuccess: (uploadResponse) => {
             if (uploadResponse.success) {
-              // 이미지 업로드 성공 후 프로필 생성
               const payload = {
                 title: title.trim(),
                 ...transformBasicAnswersToPayload(profileInput.basicAnswers),
@@ -162,54 +134,25 @@ export const ProfilePreviewStep = ({
             />
           </div>
 
-          <div className="flex justify-center">
-            <div className="relative h-32 w-32">
-              {imagePreview ? (
-                <Image
-                  src={imagePreview}
-                  alt="Profile preview"
-                  fill
-                  className="rounded-full object-cover"
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center rounded-full bg-muted">
-                  <span className="text-4xl">👤</span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <Label htmlFor="image">프로필 이미지</Label>
-            <Input
-              id="image"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="mt-2"
-            />
-          </div>
+          <ProfileImageUploader
+            onImageChange={(file) => {
+              setImageFile(file);
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                setImagePreview(reader.result as string);
+              };
+              reader.readAsDataURL(file);
+            }}
+            imagePreview={imagePreview}
+          />
         </div>
 
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">기본 정보</h3>
-          {profileInput.basicAnswers.map((qa) => (
-            <div key={qa.order}>
-              <Label>{qa.question}</Label>
-              <p className="mt-1 text-muted-foreground">{qa.answer}</p>
-            </div>
-          ))}
-        </div>
+        <QuestionList questions={profileInput.basicAnswers} title="기본 정보" />
 
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">개인화된 질문</h3>
-          {profileInput.aiAnswers.map((qa) => (
-            <div key={qa.order}>
-              <Label>{qa.question}</Label>
-              <p className="mt-1 text-muted-foreground">{qa.answer}</p>
-            </div>
-          ))}
-        </div>
+        <QuestionList
+          questions={profileInput.aiAnswers}
+          title="개인화된 질문"
+        />
       </Card>
 
       <div className="flex justify-end">
@@ -226,45 +169,4 @@ export const ProfilePreviewStep = ({
       </div>
     </div>
   );
-};
-
-type ProfileQuestionAnswer = Array<{
-  question: string;
-  answer: string | number;
-  category?: string;
-  order: number;
-}>;
-
-const transformBasicAnswersToPayload = (
-  basicAnswers: ProfileQuestionAnswer,
-) => {
-  const answerMap = basicAnswers.reduce(
-    (acc, { question, answer, category }) => {
-      if (category) {
-        acc[category] = String(answer);
-      }
-      return acc;
-    },
-    {} as Record<string, string>,
-  );
-
-  return {
-    display_name: answerMap.displayName?.trim() || "",
-    age: Number(answerMap.age) || 0,
-    occupation: answerMap.occupation?.trim() || "",
-    hobby: answerMap.hobby?.trim() || "",
-    interest: answerMap.interest?.trim() || "",
-    core_value: answerMap.coreValue?.trim() || "",
-    strength: answerMap.strength?.trim() || "",
-    role_model: answerMap.roleModel?.trim() || "",
-    personality: answerMap.personality?.trim() || "",
-    relationship_status: answerMap.relationshipStatus?.trim() || "",
-  };
-};
-
-const transformAIAnswersToQuestions = (aiAnswers: ProfileQuestionAnswer) => {
-  return aiAnswers.map(({ question, answer }) => ({
-    question: question.trim(),
-    answer: String(answer).trim(),
-  }));
 };
