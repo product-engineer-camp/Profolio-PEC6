@@ -8,7 +8,7 @@ type GenerateAIQuestionsResponse = {
 };
 
 export const generateAIQuestions = async (
-  basicAnswers: ProfileQuestionAnswer,
+  basicAnswers: ProfileQuestionAnswer[],
 ): Promise<GenerateAIQuestionsResponse> => {
   const message = generateAIQuestionsPrompt(basicAnswers);
 

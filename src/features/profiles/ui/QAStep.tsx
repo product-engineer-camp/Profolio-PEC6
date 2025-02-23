@@ -7,7 +7,7 @@ import { Question } from "@/src/entities/profiles/api/type";
 type QAStepProps = {
   questions: Question[];
   currentQuestionIndex: number;
-  answers: ProfileQuestionAnswer;
+  answers: ProfileQuestionAnswer[];
   onAnswer: (
     questionId: string,
     answer: QuestionValue,

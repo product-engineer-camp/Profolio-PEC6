@@ -1,10 +1,9 @@
 import { createClient } from "@/shared/utils/supabase/server";
+import {
+  PersonalizedQuestion,
+  Question,
+} from "@/src/entities/profiles/api/type";
 import { NextResponse } from "next/server";
-
-type PersonalizedQuestion = {
-  question: string;
-  answer: string;
-};
 
 type CreateProfilePayload = {
   title: string;
@@ -18,7 +17,7 @@ type CreateProfilePayload = {
   role_model: string;
   personality: string;
   relationship_status: string;
-  personalized_questions: PersonalizedQuestion[];
+  personalized_questions: Omit<PersonalizedQuestion, "id">[];
   theme_id: number;
   avatar_url: string;
 };
@@ -117,11 +116,13 @@ export async function POST(request: Request) {
       const { error: questionsError } = await supabase
         .from("personalized_questions")
         .insert(
-          payload.personalized_questions.map((q: PersonalizedQuestion) => ({
-            profile_id: profile.id,
-            question: q.question,
-            answer: q.answer,
-          })),
+          payload.personalized_questions.map(
+            (q: Omit<PersonalizedQuestion, "id">) => ({
+              profile_id: profile.id,
+              question: q.question,
+              answer: q.answer,
+            }),
+          ),
         );
 
       if (questionsError) throw questionsError;

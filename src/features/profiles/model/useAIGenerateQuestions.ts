@@ -6,12 +6,12 @@ type UseAIGenerateQuestionsReturn = {
   questions: Question[];
   isLoading: boolean;
   error: Error | null;
-  generateAIQuestions: (answers: ProfileQuestionAnswer) => Promise<void>;
+  generateAIQuestions: (answers: ProfileQuestionAnswer[]) => Promise<void>;
 };
 
 export const useAIGenerateQuestions = (): UseAIGenerateQuestionsReturn => {
   const mutation = useMutation({
-    mutationFn: async (answers: ProfileQuestionAnswer) => {
+    mutationFn: async (answers: ProfileQuestionAnswer[]) => {
       const { questions } = await generateAIQuestions(answers);
 
       return questions;

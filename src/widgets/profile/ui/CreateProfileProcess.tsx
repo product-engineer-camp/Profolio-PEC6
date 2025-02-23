@@ -34,7 +34,7 @@ export default function CreateProfileProcess() {
     profileInput.aiAnswers,
   );
 
-  const handleBasicQAComplete = async (answers: ProfileQuestionAnswer) => {
+  const handleBasicQAComplete = async (answers: ProfileQuestionAnswer[]) => {
     updateBasicAnswers(answers);
     try {
       await generateAIQuestions(answers);
@@ -43,7 +43,7 @@ export default function CreateProfileProcess() {
       // error 상태로 처리됨
     }
   };
-  const handleAIQAComplete = (answers: ProfileQuestionAnswer) => {
+  const handleAIQAComplete = (answers: ProfileQuestionAnswer[]) => {
     updateAIAnswers(answers);
     updateStep(3);
   };

@@ -14,8 +14,7 @@ import { Card } from "@/shared/ui/card";
 import { Label } from "@/shared/ui/label";
 import { Input } from "@/shared/ui/input";
 import { toast } from "sonner";
-import { ProfileInputType } from "@/src/widgets/profile/model/type";
-
+import { ProfileInputType } from "@/src/features/profiles/model/type";
 type ProfilePreviewStepProps = {
   profileInput: ProfileInputType;
 };

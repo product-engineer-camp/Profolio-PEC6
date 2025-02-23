@@ -6,7 +6,7 @@ import {
 } from "../constants/aiQuestionsPrompt";
 
 export const generateAIQuestionsPrompt = (
-  basicAnswers: ProfileQuestionAnswer,
+  basicAnswers: ProfileQuestionAnswer[],
 ): string => {
   return `다음 질문과 그에 대한 답변을 바탕으로 개인을 더 잘 드러낼 수 있는 맞춤 질문을 생성해주세요:
 

@@ -22,14 +22,16 @@ export type Profile = {
     colors: string;
     pattern: string;
   };
-  personalized_questions: Array<{
-    id: string;
-    question: string;
-    answer: string;
-  }>;
+  personalized_questions: PersonalizedQuestion[];
 };
 
-export interface Question {
+export type PersonalizedQuestion = {
+  id: string;
+  question: string;
+  answer: string;
+};
+
+export type Question = {
   id: string;
   order: number;
   question: string;
@@ -42,4 +44,4 @@ export interface Question {
   }>;
   placeholder?: string;
   maxLength?: number;
-}
+};

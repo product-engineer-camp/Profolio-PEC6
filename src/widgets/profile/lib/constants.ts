@@ -1,4 +1,4 @@
-import { ProfileInputType } from "../model/type";
+import { ProfileInputType } from "@/src/features/profiles/model/type";
 
 export const INITIAL_PROFILE_INPUT: ProfileInputType = {
   title: "박둘기",
