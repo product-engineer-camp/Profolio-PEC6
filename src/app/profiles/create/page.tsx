@@ -1,4 +1,4 @@
-import CreateProfileProcess from "@/src/widgets/profile/ui";
+import CreateProfileProcess from "@/src/widgets/profile/ui/CreateProfileProcess";
 
 export default function CreateProfile() {
   return (
