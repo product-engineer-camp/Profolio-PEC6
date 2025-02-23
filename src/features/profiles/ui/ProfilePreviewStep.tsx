@@ -20,6 +20,7 @@ import {
   transformBasicAnswersToPayload,
 } from "../model/formatProfileInput";
 import { toast } from "sonner";
+import { adjustColor } from "@/entities/themes/lib/adjustColor";
 
 type ProfilePreviewStepProps = {
   profileInput: ProfileInputType;
@@ -128,37 +129,55 @@ export const ProfilePreviewStep = ({
         </p>
       </div>
 
+      <div>
+        <Label htmlFor="title">프로필 제목</Label>
+        <Input
+          id="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="프로필 제목을 입력해주세요"
+          className="mt-2"
+        />
+      </div>
+
       <Card
-        className="space-y-6 p-6"
+        className="relative space-y-6 overflow-hidden p-6"
         style={{
-          background: theme.colors[0],
-          backgroundImage: theme.pattern,
+          backgroundColor: "transparent",
         }}
       >
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="title">프로필 제목</Label>
-            <Input
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="프로필 제목을 입력해주세요"
-              className="mt-2"
+        <div className="absolute inset-0 grid grid-cols-4 grid-rows-1">
+          {theme.colors.map((color, index) => (
+            <div
+              key={`${color}-${index}`}
+              className="h-full w-full"
+              style={{ backgroundColor: color }}
             />
-          </div>
+          ))}
+        </div>
 
-          <ProfileImageUploader
-            onImageChange={handleImageChange}
-            imagePreview={imagePreview}
+        <div
+          className={`absolute inset-0 h-full w-full bg-repeat opacity-50 ${theme.pattern}`}
+          style={{ color: adjustColor(theme.colors[0], -30) }}
+        />
+
+        <ProfileImageUploader
+          onImageChange={handleImageChange}
+          imagePreview={imagePreview}
+        />
+        <div className="relative z-10 rounded-lg bg-white/80 p-4">
+          <QuestionList
+            questions={profileInput.basicAnswers}
+            title="기본 정보"
           />
         </div>
 
-        <QuestionList questions={profileInput.basicAnswers} title="기본 정보" />
-
-        <QuestionList
-          questions={profileInput.aiAnswers}
-          title="개인화된 질문"
-        />
+        <div className="relative z-10 rounded-lg bg-white/80 p-4">
+          <QuestionList
+            questions={profileInput.aiAnswers}
+            title="개인화된 질문"
+          />
+        </div>
       </Card>
 
       <div className="flex justify-end">
