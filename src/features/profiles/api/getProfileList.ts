@@ -1,9 +1,6 @@
 import { Profile } from "@/entities/profiles/model/type";
-import type { SortOption } from "@/features/profiles/model/type";
 
-export async function getProfileList(
-  sort: SortOption = "latest",
-): Promise<Profile[]> {
+export async function getProfileList(): Promise<Profile[]> {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/profiles`,
