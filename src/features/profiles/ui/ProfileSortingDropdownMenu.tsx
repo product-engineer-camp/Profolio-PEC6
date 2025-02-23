@@ -8,8 +8,10 @@ import {
 } from "@/shared/ui/dropdown";
 import { Button } from "@/shared/ui/button";
 import { ChevronDown } from "lucide-react";
-import { SortOption, SORT_OPTIONS } from "../model/type";
+import { SortOption } from "../model/type";
+import { SORT_OPTIONS } from "../model/constants";
 import { useState } from "react";
+import { getDropdownCurrentLabel } from "@/shared/lib/dropdown";
 
 type ProfileSortingDropdownMenuProps = {
   onSort: (option: SortOption) => void;
@@ -25,16 +27,15 @@ export function ProfileSortingDropdownMenu({
   const [isOpen, setIsOpen] = useState(false);
 
   const getCurrentLabel = () => {
-    return SORT_OPTIONS.find((option) => option.value === currentSort)?.label;
+    return getDropdownCurrentLabel(SORT_OPTIONS, currentSort);
   };
 
   return (
     <DropdownMenu onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild disabled={disabled}>
         <Button
           variant="ghost"
           size="sm"
-          disabled={disabled}
           className="flex items-center gap-1 text-muted-foreground hover:text-foreground"
         >
           {getCurrentLabel()}

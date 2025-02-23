@@ -6,7 +6,7 @@ import { User } from "@/entities/user/model/user.interface";
 export const login = async ({ email, password }: User) => {
   const supabase = await createClient();
 
-  const { error: loginError } = await supabase.auth.signInWithPassword({
+  const { data, error: loginError } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
@@ -15,5 +15,10 @@ export const login = async ({ email, password }: User) => {
     return { message: `${loginError.message}` };
   }
 
-  return { message: "SUCCESS" };
+  return {
+    message: "SUCCESS",
+    access_token: data.session?.access_token,
+    refresh_token: data.session?.refresh_token,
+    user: data.user,
+  };
 };

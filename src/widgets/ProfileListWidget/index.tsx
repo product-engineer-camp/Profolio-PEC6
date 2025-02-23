@@ -3,55 +3,32 @@
 import { ProfileList } from "@/features/profiles/ui/ProfileList";
 import { ProfileSortingDropdownMenu } from "@/features/profiles/ui/ProfileSortingDropdownMenu";
 import { SortOption } from "@/features/profiles/model/type";
-import { useState, useEffect, useCallback } from "react";
-import { getProfileList } from "@/features/profiles/api/getProfileList";
 import { Profile } from "@/entities/profiles/model/type";
-import { useInfiniteScroll } from "@/shared/lib/useInfiniteScroll";
-import { LoadingSpinner } from "@/shared/ui/loading-spinner";
+import { useState } from "react";
+import { getProfileList } from "@/features/profiles/api/getProfileList";
 
-export function ProfileListWidget() {
+type ProfileListWidgetProps = {
+  initialProfiles: Profile[];
+};
+
+export function ProfileListWidget({ initialProfiles }: ProfileListWidgetProps) {
   const [currentSort, setCurrentSort] = useState<SortOption>("latest");
+  const [profiles, setProfiles] = useState<Profile[]>(initialProfiles);
   const [isLoading, setIsLoading] = useState(false);
-  const [profiles, setProfiles] = useState<Profile[]>([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
 
-  const loadMoreProfiles = useCallback(async () => {
-    if (isLoading || !hasMore) return;
-
-    setIsLoading(true);
+  const handleSort = async (option: SortOption) => {
     try {
-      const newProfiles = await getProfileList(page, currentSort);
+      setIsLoading(true);
+      setCurrentSort(option);
 
-      if (newProfiles.length === 0) {
-        setHasMore(false);
-        return;
-      }
-
-      setProfiles((prev) => [...prev, ...newProfiles]);
-      setPage((prev) => prev + 1);
-      console.log("loadMore", page);
+      const response = await getProfileList(option);
+      setProfiles(response);
+    } catch (error) {
+      console.error("Failed to fetch profiles:", error);
+      // 에러 처리를 위한 상태 관리가 필요하다면 추가해주세요
     } finally {
       setIsLoading(false);
     }
-  }, [page, currentSort, isLoading, hasMore]);
-
-  // 무한 스크롤 훅 사용
-  const { containerRef } = useInfiniteScroll({
-    onIntersect: loadMoreProfiles,
-    threshold: 0.5,
-  });
-
-  // 정렬 옵션이 변경될 때 프로필 목록 초기화
-  useEffect(() => {
-    setProfiles([]);
-    setPage(1);
-    setHasMore(true);
-    loadMoreProfiles();
-  }, [currentSort]);
-
-  const handleSort = (option: SortOption) => {
-    setCurrentSort(option);
   };
 
   return (
@@ -63,9 +40,13 @@ export function ProfileListWidget() {
           disabled={isLoading}
         />
       </div>
-      <ProfileList profiles={profiles} />
-      <div ref={containerRef} />
-      {isLoading && <LoadingSpinner />}
+      {isLoading ? (
+        <div className="flex justify-center py-8">
+          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900" />
+        </div>
+      ) : (
+        <ProfileList profiles={profiles} currentSort={currentSort} />
+      )}
     </div>
   );
 }
