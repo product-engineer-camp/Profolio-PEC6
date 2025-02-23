@@ -1,35 +1,9 @@
 import { ApiResponse } from "@/shared/api/type";
-
-export type Profile = {
-  id: number;
-  display_name: string;
-  age: number;
-  occupation: string;
-  hobby: string;
-  current_interest: string;
-  core_value: string;
-  strength: string;
-  role_model: string;
-  personality: string;
-  relationship_status: string;
-  created_at: string;
-  updated_at: string;
-  share_count: number;
-  theme: {
-    id: number;
-    colors: string;
-    pattern: string;
-  };
-  personalized_questions: Array<{
-    id: string;
-    question: string;
-    answer: string;
-  }>;
-};
+import { Profile } from "./type";
 
 export type GetProfilesResponse = ApiResponse<Profile[]>;
 
-export const getProfile = async (): Promise<GetProfilesResponse> => {
+export const getProfiles = async (): Promise<GetProfilesResponse> => {
   try {
     const response = await fetch("/api/profiles");
     const data = await response.json();

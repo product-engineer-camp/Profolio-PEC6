@@ -63,7 +63,6 @@ export default function CreateProfileProcess() {
   });
 
   const handleThemeSelect = (themeId: string) => {
-    console.log("CreateProfileProcess - Selected theme:", themeId);
     updateThemeId(themeId);
     updateStep(4);
   };
@@ -134,6 +133,6 @@ export default function CreateProfileProcess() {
         selectedThemeId={profileInput.themeId}
       />
     ),
-    4: <ProfilePreviewStep />,
+    4: <ProfilePreviewStep profileInput={profileInput} />,
   }[currentStep];
 }

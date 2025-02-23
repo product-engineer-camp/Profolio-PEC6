@@ -7,18 +7,20 @@ type PersonalizedQuestion = {
 };
 
 type CreateProfilePayload = {
+  title: string;
   display_name: string;
   age: number;
   occupation: string;
   hobby: string;
-  current_interest: string;
+  interest: string;
   core_value: string;
   strength: string;
   role_model: string;
   personality: string;
   relationship_status: string;
-  theme_id: number;
   personalized_questions: PersonalizedQuestion[];
+  theme_id: number;
+  avatar_url: string;
 };
 
 export async function GET() {
@@ -64,23 +66,46 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const supabase = await createClient();
+
+    // 현재 로그인한 사용자 정보 가져오기
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "인증된 사용자만 프로필을 생성할 수 있습니다.",
+          data: null,
+        },
+        { status: 401 },
+      );
+    }
+
     const payload: CreateProfilePayload = await request.json();
 
-    // 1. 프로필 생성
+    console.log("payload", payload);
+
+    // 1. 프로필 생성 (user_id 포함)
     const { data: profile, error: profileError } = await supabase
       .from("profile")
       .insert({
+        user_id: user.id,
         display_name: payload.display_name,
         age: payload.age,
         occupation: payload.occupation,
         hobby: payload.hobby,
-        current_interest: payload.current_interest,
+        interest: payload.interest,
         core_value: payload.core_value,
         strength: payload.strength,
         role_model: payload.role_model,
         personality: payload.personality,
         relationship_status: payload.relationship_status,
         theme_id: payload.theme_id,
+        avatar_url: payload.avatar_url,
+        title: payload.title,
       })
       .select()
       .single();

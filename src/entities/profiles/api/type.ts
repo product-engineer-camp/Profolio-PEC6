@@ -1,13 +1,40 @@
 import type { ApiResponse } from "@/src/shared/api/type";
-import type { Profile } from "../model/profile.type";
 
 export type GetProfileResponse = ApiResponse<Profile>;
+
+export type Profile = {
+  id: number;
+  display_name: string;
+  age: number;
+  occupation: string;
+  hobby: string;
+  current_interest: string;
+  core_value: string;
+  strength: string;
+  role_model: string;
+  personality: string;
+  relationship_status: string;
+  created_at: string;
+  updated_at: string;
+  share_count: number;
+  theme: {
+    id: number;
+    colors: string;
+    pattern: string;
+  };
+  personalized_questions: Array<{
+    id: string;
+    question: string;
+    answer: string;
+  }>;
+};
 
 export interface Question {
   id: string;
   order: number;
   question: string;
   isRequired: boolean;
+  category?: string;
   type: "text" | "select" | "number";
   options?: Array<{
     value: string;

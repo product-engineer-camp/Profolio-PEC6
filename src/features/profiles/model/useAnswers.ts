@@ -25,7 +25,15 @@ export const useAnswers = (initialAnswers: ProfileQuestionAnswer = []) => {
         };
         return newAnswers;
       }
-      return [...prev, { question: question.question, answer }];
+      return [
+        ...prev,
+        {
+          question: question.question,
+          answer,
+          order: question.order,
+          category: question.category,
+        },
+      ];
     });
   };
 

@@ -2,17 +2,19 @@ import { ApiResponse } from "@/shared/api/type";
 import { Profile } from "@/src/entities/profiles/model/profile.type";
 
 export type CreateProfilePayload = {
+  title: string;
   display_name: string;
   age: number;
   occupation: string;
   hobby: string;
-  current_interest: string;
+  interest: string;
   core_value: string;
   strength: string;
   role_model: string;
   personality: string;
   relationship_status: string;
   theme_id: number;
+  avatar_url: string;
   personalized_questions: Array<{
     question: string;
     answer: string;

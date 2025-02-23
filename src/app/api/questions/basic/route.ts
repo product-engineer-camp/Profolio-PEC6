@@ -7,18 +7,7 @@ export async function GET() {
 
     const { data, error } = await supabase
       .from("basic_questions")
-      .select(
-        `
-        id,
-        order,
-        question,
-        isRequired:is_required,
-        type,
-        options,
-        placeholder,
-        maxLength:max_length
-      `,
-      )
+      .select()
       .order("order", { ascending: true });
 
     if (error) {
