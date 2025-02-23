@@ -1,10 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useThemeDetail } from "@/entities/themes/model/useThemeDetail";
-import { useUploadProfileImage } from "../model/useUploadProfileImage";
-import { useCreateProfile } from "../model/useCreateProfile";
 import { useAuth } from "@/shared/model/auth/useAuth";
 import { Button } from "@/shared/ui/button";
 import { LoadingSpinner } from "@/shared/ui/LoadingSpinner";
@@ -12,14 +9,11 @@ import { ErrorMessage } from "@/shared/ui/ErrorMessage";
 import { Card } from "@/shared/ui/card";
 import { Label } from "@/shared/ui/label";
 import { Input } from "@/shared/ui/input";
-import { ProfileInputType } from "../model/type";
+import { type ProfileInputType } from "../model/type";
 import { QuestionList } from "@/entities/profiles/ui/QuestionList";
 import { ProfileImageUploader } from "./ProfileImageUploader";
-import {
-  transformAIAnswersToQuestions,
-  transformBasicAnswersToPayload,
-} from "../model/formatProfileInput";
-import { toast } from "sonner";
+import { useProfilePreview } from "../model/useProfilePreview";
+import { useProfileCreate } from "../model/useProfileCreate";
 import { adjustColor } from "@/entities/themes/lib/adjustColor";
 
 type ProfilePreviewStepProps = {
@@ -30,72 +24,27 @@ export const ProfilePreviewStep = ({
   profileInput,
 }: ProfilePreviewStepProps) => {
   const router = useRouter();
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>("");
-  const [title, setTitle] = useState("");
   const { isAuthenticated, isCheckingAuth } = useAuth();
-
-  const { mutate: uploadImage, isPending: isUploading } =
-    useUploadProfileImage();
-  const { mutate: createProfile, isPending: isCreating } = useCreateProfile();
   const { data: theme, isLoading: isLoadingTheme } = useThemeDetail(
     Number(profileInput.themeId),
   );
 
+  const {
+    title,
+    imageFile,
+    imagePreview,
+    handleTitleChange,
+    handleImageChange,
+  } = useProfilePreview();
+
+  const { handleSubmit, isUploading, isCreating } = useProfileCreate({
+    profileInput,
+    title,
+    imageFile,
+  });
+
   const handleLogin = () => {
     router.push("/auth/login");
-  };
-
-  const handleSubmit = async () => {
-    try {
-      uploadImage(
-        { file: imageFile || undefined },
-        {
-          onSuccess: (uploadResponse) => {
-            if (uploadResponse.success) {
-              const payload = {
-                title: title.trim(),
-                ...transformBasicAnswersToPayload(profileInput.basicAnswers),
-                theme_id: Number(profileInput.themeId),
-                personalized_questions: transformAIAnswersToQuestions(
-                  profileInput.aiAnswers,
-                ),
-                avatar_url: uploadResponse.data.url,
-              };
-
-              createProfile(payload, {
-                onSuccess: (response) => {
-                  if (response.success) {
-                    router.push("/profiles");
-                  }
-                },
-                onError: (error) => {
-                  toast.error("프로필 생성에 실패했습니다.");
-                },
-              });
-            }
-          },
-          onError: (error) => {
-            toast.error("이미지 업로드에 실패했습니다.");
-          },
-        },
-      );
-    } catch (error) {
-      toast.error("프로필 생성 중 오류가 발생했습니다.");
-    }
-  };
-
-  const handleImageChange = (file: File | null) => {
-    setImageFile(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setImagePreview("");
-    }
   };
 
   if (isCheckingAuth || isLoadingTheme) {
@@ -134,7 +83,7 @@ export const ProfilePreviewStep = ({
         <Input
           id="title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => handleTitleChange(e.target.value)}
           placeholder="프로필 제목을 입력해주세요"
           className="mt-2"
         />
@@ -161,10 +110,13 @@ export const ProfilePreviewStep = ({
           style={{ color: adjustColor(theme.colors[0], -30) }}
         />
 
-        <ProfileImageUploader
-          onImageChange={handleImageChange}
-          imagePreview={imagePreview}
-        />
+        <div className="relative z-10">
+          <ProfileImageUploader
+            onImageChange={handleImageChange}
+            imagePreview={imagePreview}
+          />
+        </div>
+
         <div className="relative z-10 rounded-lg bg-white/80 p-4">
           <QuestionList
             questions={profileInput.basicAnswers}
