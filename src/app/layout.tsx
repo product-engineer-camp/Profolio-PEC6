@@ -4,6 +4,8 @@ import "@/application/globals.css";
 import { Logo } from "@/shared/ui/Logo";
 import Link from "next/link";
 import { QueryProvider } from "./_providers/QueryProvider";
+import { Toaster } from "@/shared/ui/sonner";
+import { KakaoScript } from "./config/_script/KakaoScript";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -37,6 +39,8 @@ export default function RootLayout({
             {children}
           </main>
         </QueryProvider>
+        <Toaster />
+        <KakaoScript />
       </body>
     </html>
   );

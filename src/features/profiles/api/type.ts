@@ -1,25 +1,23 @@
-import type { ApiResponse } from "@/src/shared/api/type";
-import type { Profile } from "@/entities/profiles/model/profile.type";
+import type { ProfileList, SortOption } from "@/features/profiles/model/type";
 
-// 공유 많은 순, 최신 순
-export type SortType = "SHARE_DESC" | "LATEST";
-
-export type GetProfileRequest = {
-  page?: number;
-  perPage?: number;
-  sort?: SortType;
-};
-export type GetProfiles = ApiResponse<{
-  profiles: Array<Profile>;
+export type GetProfileListResponse = {
+  profiles: ProfileList;
+  total: number;
   page: number;
-  perPage: number;
-  first: boolean;
-  last: boolean;
-}>;
+  limit: number;
+  isFirst: boolean;
+  isLast: boolean;
+};
 
-export type PostProfileRequest = Profile;
-export type PostProfileResponse = ApiResponse<null>;
+export type GetProfileListRequest = {
+  page?: number;
+  limit?: number;
+  sortBy?: SortOption;
+};
 
-export type DeleteProfileResponse = ApiResponse<null>;
-
-export type PutProfileResponse = ApiResponse<null>;
+// API Error Types
+export type ProfileApiError = {
+  code: string;
+  message: string;
+  details?: Record<string, string[]>;
+};
