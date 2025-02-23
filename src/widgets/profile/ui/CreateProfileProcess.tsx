@@ -2,16 +2,18 @@
 import { QAStep } from "@/features/profiles/ui/QAStep";
 import { ThemeSelectStep } from "@/features/themes/ui/ThemeSelectStep";
 import { ProfilePreviewStep } from "@/features/profiles/ui/ProfilePreviewStep";
-import { LoadingView } from "@/src/shared/ui/LoadingView";
-import { ErrorView } from "@/src/shared/ui/ErrorView";
+import { LoadingView } from "@/shared/ui/LoadingView";
+import { ErrorView } from "@/shared/ui/ErrorView";
 import { Button } from "@/shared/ui/button";
 import { useProfileCreateStep } from "../model/useProfileCreateStep";
-import { useQAFlow } from "@/src/features/profiles/model/useQAFlow";
+import { useQAFlow } from "@/features/profiles/model/useQAFlow";
 import { useProfileData } from "../model/useProfileData";
-import { ProfileQuestionAnswer } from "@/src/features/profiles/model/type";
-import { useAIGenerateQuestions } from "@/src/features/profiles/model/useAIGenerateQuestions";
+import { ProfileQuestionAnswer } from "@/features/profiles/model/type";
+import { useAIGenerateQuestions } from "@/features/profiles/model/useAIGenerateQuestions";
 import { useAnswers } from "@/features/profiles/model/useAnswers";
-import { useBasicQuestions } from "@/src/entities/profiles/model/useBasicQuestions";
+import { useBasicQuestions } from "@/entities/profiles/model/useBasicQuestions";
+import { StepIndicator } from "@/entities/profiles/ui/StepIndicator";
+import { PROFILE_CREATE_STEPS } from "@/src/entities/profiles/constants/profileCreateSteps";
 
 export default function CreateProfileProcess() {
   const { currentStep, updateStep } = useProfileCreateStep();
@@ -105,34 +107,45 @@ export default function CreateProfileProcess() {
     );
   }
 
-  return {
-    1: (
-      <QAStep
-        questions={basicQuestionsData?.questions || []}
-        isLoading={isLoadingBasicQuestions}
-        currentQuestionIndex={basicNavigation.currentQAIndex}
-        answers={basicAnswers}
-        onAnswer={handleBasicAnswer}
-        onNext={basicNavigation.handleNext}
-        onPrevious={basicNavigation.handlePrevious}
+  return (
+    <div className="space-y-8">
+      <StepIndicator
+        steps={PROFILE_CREATE_STEPS}
+        currentStep={currentStep}
+        className="mb-8"
       />
-    ),
-    2: (
-      <QAStep
-        questions={aiGeneratedQuestions}
-        currentQuestionIndex={aiNavigation.currentQAIndex}
-        answers={aiAnswers}
-        onAnswer={handleAIAnswer}
-        onNext={aiNavigation.handleNext}
-        onPrevious={aiNavigation.handlePrevious}
-      />
-    ),
-    3: (
-      <ThemeSelectStep
-        onSelect={handleThemeSelect}
-        selectedThemeId={profileInput.themeId}
-      />
-    ),
-    4: <ProfilePreviewStep profileInput={profileInput} />,
-  }[currentStep];
+      {
+        {
+          1: (
+            <QAStep
+              questions={basicQuestionsData?.questions || []}
+              isLoading={isLoadingBasicQuestions}
+              currentQuestionIndex={basicNavigation.currentQAIndex}
+              answers={basicAnswers}
+              onAnswer={handleBasicAnswer}
+              onNext={basicNavigation.handleNext}
+              onPrevious={basicNavigation.handlePrevious}
+            />
+          ),
+          2: (
+            <QAStep
+              questions={aiGeneratedQuestions}
+              currentQuestionIndex={aiNavigation.currentQAIndex}
+              answers={aiAnswers}
+              onAnswer={handleAIAnswer}
+              onNext={aiNavigation.handleNext}
+              onPrevious={aiNavigation.handlePrevious}
+            />
+          ),
+          3: (
+            <ThemeSelectStep
+              onSelect={handleThemeSelect}
+              selectedThemeId={profileInput.themeId}
+            />
+          ),
+          4: <ProfilePreviewStep profileInput={profileInput} />,
+        }[currentStep]
+      }
+    </div>
+  );
 }
