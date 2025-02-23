@@ -7,7 +7,6 @@ export type Profile = {
   theme: Theme;
   profileUrl: string;
   shareCount: number;
-  shares: number;
   createdAt: string;
   updatedAt: string;
 };

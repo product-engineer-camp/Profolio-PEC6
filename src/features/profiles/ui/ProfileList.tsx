@@ -53,7 +53,7 @@ export function ProfileList({ profiles, currentSort }: ProfileListProps) {
               <CardContent className="flex justify-end py-1">
                 {currentSort === "shares" && (
                   <span className="text-sm text-muted-foreground">
-                    {profile.shares ?? 0}회 공유
+                    {profile.shareCount ?? 0}회 공유
                   </span>
                 )}
                 {currentSort === "latest" && (

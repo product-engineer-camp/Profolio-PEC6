@@ -1,6 +1,7 @@
 import { createClient } from "@/shared/utils/supabase/server";
 import { NextResponse, NextRequest } from "next/server";
 import type { SortOption } from "@/features/profiles/model/type";
+import { formatSnakeToCamel } from "@/shared/utils/formatters";
 
 export async function GET(request: NextRequest) {
   const supabase = await createClient();
@@ -33,17 +34,10 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // 필드명을 카멜케이스로 변환
-    const formattedProfiles = profiles?.map((profile) => ({
-      ...profile,
-      createdAt: profile.created_at,
-      updatedAt: profile.updated_at,
-      shares: profile.share_count,
-      // 기존 스네이크케이스 필드 제거
-      created_at: undefined,
-      updated_at: undefined,
-      share_count: undefined,
-    }));
+    // formatSnakeToCamel을 사용하여 각 프로필 데이터를 카멜케이스로 변환
+    const formattedProfiles = profiles?.map((profile) =>
+      formatSnakeToCamel(profile),
+    );
 
     return NextResponse.json({ profiles: formattedProfiles });
   } catch (error) {

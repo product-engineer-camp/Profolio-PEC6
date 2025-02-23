@@ -1,5 +1,6 @@
 import { createClient } from "@/shared/utils/supabase/server";
 import { NextResponse, NextRequest } from "next/server";
+import { formatSnakeToCamel } from "@/shared/utils/formatters";
 
 export async function GET(
   request: NextRequest,
@@ -34,14 +35,7 @@ export async function GET(
       return NextResponse.json({ error: "Profile not found" }, { status: 404 });
     }
 
-    // 필드명을 카멜케이스로 변환
-    const formattedProfile = {
-      id: profile.id,
-      title: profile.title,
-      createdAt: profile.created_at,
-      updatedAt: profile.updated_at,
-      shares: profile.share_count,
-    };
+    const formattedProfile = formatSnakeToCamel(profile);
 
     return NextResponse.json({ profile: formattedProfile });
   } catch (error) {
