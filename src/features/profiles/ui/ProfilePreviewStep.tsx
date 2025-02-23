@@ -15,6 +15,7 @@ import { ProfileImageUploader } from "./ProfileImageUploader";
 import { useProfilePreview } from "../model/useProfilePreview";
 import { useProfileCreate } from "../model/useProfileCreate";
 import { adjustColor } from "@/entities/themes/lib/adjustColor";
+import { CreateProfileButton } from "./CreateProfileButton";
 
 type ProfilePreviewStepProps = {
   profileInput: ProfileInputType;
@@ -130,20 +131,13 @@ export const ProfilePreviewStep = ({
             title="개인화된 질문"
           />
         </div>
-      </Card>
 
-      <div className="flex justify-end">
-        <Button onClick={handleSubmit} disabled={isUploading || isCreating}>
-          {isUploading || isCreating ? (
-            <>
-              <LoadingSpinner className="mr-2" />
-              처리중...
-            </>
-          ) : (
-            "프로필 생성하기"
-          )}
-        </Button>
-      </div>
+        <CreateProfileButton
+          isUploading={isUploading}
+          isCreating={isCreating}
+          onSubmit={handleSubmit}
+        />
+      </Card>
     </div>
   );
 };
