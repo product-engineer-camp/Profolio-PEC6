@@ -1,5 +1,9 @@
 import { ProfileListWidget } from "@/widgets/ProfileListWidget";
 
 export default async function ProfilesPage() {
-  return <ProfileListWidget />;
+  return (
+    <div className="my-5">
+      <ProfileListWidget />
+    </div>
+  );
 }
