@@ -3,23 +3,30 @@
 import { ProfileList } from "@/features/profiles/ui/ProfileList";
 import { ProfileSortingDropdownMenu } from "@/features/profiles/ui/ProfileSortingDropdownMenu";
 import { SortOption } from "@/features/profiles/model/type";
-import { Profile } from "@/entities/profiles/model/type";
 import { useState } from "react";
 import { sortProfiles } from "@/features/profiles/model/sort";
+import { useProfileList } from "@/features/profiles/model/useProfileList";
 
-type ProfileListWidgetProps = {
-  initialProfiles: Profile[];
-};
-
-export function ProfileListWidget({ initialProfiles }: ProfileListWidgetProps) {
+export function ProfileListWidget() {
   const [currentSort, setCurrentSort] = useState<SortOption>("latest");
-  const [profiles] = useState<Profile[]>(initialProfiles);
+  const { profiles, updateShareCount } = useProfileList();
 
   const handleSort = (option: SortOption) => {
     setCurrentSort(option);
   };
 
   const sortedProfiles = sortProfiles(profiles, currentSort);
+
+  if (profiles.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20">
+        <p className="mb-2 text-lg text-gray-500">
+          아직 등록된 프로필이 없습니다
+        </p>
+        <p className="text-gray-400">새로운 프로필을 등록해보세요!</p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -29,7 +36,11 @@ export function ProfileListWidget({ initialProfiles }: ProfileListWidgetProps) {
           onSort={handleSort}
         />
       </div>
-      <ProfileList profiles={sortedProfiles} currentSort={currentSort} />
+      <ProfileList
+        profiles={sortedProfiles}
+        currentSort={currentSort}
+        onUpdateShareCount={updateShareCount}
+      />
     </div>
   );
 }
