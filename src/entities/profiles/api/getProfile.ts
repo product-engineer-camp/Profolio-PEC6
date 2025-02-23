@@ -1,6 +1,6 @@
 import { Profile } from "../model/type";
 
-export async function getProfile(id: string): Promise<Profile | null> {
+export async function getProfile(id: number): Promise<Profile | null> {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/profiles/${id}`,

@@ -1,4 +1,3 @@
-import { getProfile } from "@/entities/profiles/api/getProfile";
 import { ProfileDetail } from "@/src/widgets/ProfileDetail";
 
 type ProfileDetailPageProps = {
@@ -11,17 +10,11 @@ export default async function ProfileDetailPage({
   params,
 }: ProfileDetailPageProps) {
   const { id } = await Promise.resolve(params);
-
-  const profile = await getProfile(id);
-  const profileUrl = `${process.env.NEXT_PUBLIC_APP_URL}/profiles/${id}`;
-
-  if (!profile) {
-    return <div>프로필을 찾을 수 없습니다.</div>;
-  }
+  const profileUrl = `${process.env["NEXT_PUBLIC_APP_URL"]}/profiles/${id}`;
 
   return (
     <div className="py-5">
-      <ProfileDetail profile={profile} profileUrl={profileUrl} />
+      <ProfileDetail profileId={Number(id)} profileUrl={profileUrl} />
     </div>
   );
 }
