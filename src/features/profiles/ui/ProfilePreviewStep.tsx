@@ -12,14 +12,14 @@ import { ErrorMessage } from "@/shared/ui/ErrorMessage";
 import { Card } from "@/shared/ui/card";
 import { Label } from "@/shared/ui/label";
 import { Input } from "@/shared/ui/input";
-import { toast } from "sonner";
 import { ProfileInputType } from "../model/type";
 import { QuestionList } from "@/entities/profiles/ui/QuestionList";
 import { ProfileImageUploader } from "./ProfileImageUploader";
 import {
-  transformBasicAnswersToPayload,
   transformAIAnswersToQuestions,
+  transformBasicAnswersToPayload,
 } from "../model/formatProfileInput";
+import { toast } from "sonner";
 
 type ProfilePreviewStepProps = {
   profileInput: ProfileInputType;
@@ -84,6 +84,19 @@ export const ProfilePreviewStep = ({
     }
   };
 
+  const handleImageChange = (file: File | null) => {
+    setImageFile(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview("");
+    }
+  };
+
   if (isCheckingAuth || isLoadingTheme) {
     return <LoadingSpinner />;
   }
@@ -135,14 +148,7 @@ export const ProfilePreviewStep = ({
           </div>
 
           <ProfileImageUploader
-            onImageChange={(file) => {
-              setImageFile(file);
-              const reader = new FileReader();
-              reader.onloadend = () => {
-                setImagePreview(reader.result as string);
-              };
-              reader.readAsDataURL(file);
-            }}
+            onImageChange={handleImageChange}
             imagePreview={imagePreview}
           />
         </div>
