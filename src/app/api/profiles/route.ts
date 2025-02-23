@@ -7,10 +7,19 @@ export async function GET(request: NextRequest) {
   const supabase = await createClient();
 
   try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { data: profiles, error } = await supabase
       .from("profile")
       .select("*")
       .is("deleted_at", null)
+      .eq("user_id", user.id)
       .order("created_at", { ascending: false });
 
     if (error) {
