@@ -1,7 +1,7 @@
 import { Button } from "@/shared/ui/button";
 import { ProgressBar } from "@/shared/ui/ProgressBar";
 import { QuestionInput } from "./QuestionInput";
-import { ProfileQuestionAnswer, QuestionValue } from "../model/type";
+import { ProfileQuestionAnswer, QuestionAnswerType } from "../model/type";
 import { Question } from "@/src/entities/profiles/api/type";
 
 type QAStepProps = {
@@ -10,7 +10,7 @@ type QAStepProps = {
   answers: ProfileQuestionAnswer[];
   onAnswer: (
     questionId: string,
-    answer: QuestionValue,
+    answer: QuestionAnswerType,
     questions: Question[],
   ) => void;
   onNext: () => void;

@@ -14,6 +14,8 @@ export const generatedAIQuestionsFormatter = (content: string): Question[] => {
       question,
       type: "text",
       isRequired: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     }));
   } catch (error) {
     console.error("AI 응답 처리 오류:", error);

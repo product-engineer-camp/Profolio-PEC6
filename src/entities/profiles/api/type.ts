@@ -26,7 +26,7 @@ export type QAType = {
 
 export type PersonalizedQuestion = BaseType & QAType;
 
-export type Question = {
+export type Question = BaseType & {
   order: number;
   question: string;
   isRequired: boolean;

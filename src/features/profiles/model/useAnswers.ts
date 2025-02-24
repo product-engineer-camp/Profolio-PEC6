@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ProfileQuestionAnswer, QuestionValue } from "./type";
+import { ProfileQuestionAnswer, QuestionAnswerType } from "./type";
 import { Question } from "@/src/entities/profiles/api/type";
 
 export const useAnswers = (initialAnswers: ProfileQuestionAnswer[] = []) => {
@@ -8,7 +8,7 @@ export const useAnswers = (initialAnswers: ProfileQuestionAnswer[] = []) => {
 
   const handleAnswer = (
     questionId: string,
-    answer: QuestionValue,
+    answer: QuestionAnswerType,
     questions: Question[],
   ) => {
     const question = questions.find((q) => q.id === questionId);

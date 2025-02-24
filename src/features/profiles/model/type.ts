@@ -1,11 +1,11 @@
 import { Profile, QAType } from "@/src/entities/profiles/api/type";
 import { ApiResponse } from "@/src/shared/api/type";
 
-export type QuestionValue = string | number;
+export type QuestionAnswerType = string | number;
 
 export type ProfileQuestionAnswer = {
   question: string;
-  answer: QuestionValue;
+  answer: QuestionAnswerType;
   category?: string;
   order: number;
 };

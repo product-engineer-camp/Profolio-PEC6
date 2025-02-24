@@ -6,7 +6,7 @@ export type ApiResponse<T> = {
 };
 
 export type BaseType = {
-  id: number;
+  id: string;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;

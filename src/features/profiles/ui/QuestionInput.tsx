@@ -9,11 +9,11 @@ import {
   SelectValue,
 } from "@/src/shared/ui/select";
 import { useCallback } from "react";
-import { QuestionValue } from "../model/type";
+import { QuestionAnswerType } from "../model/type";
 
 type QuestionInputProps = {
-  value: QuestionValue;
-  onChange: (questionId: string, value: QuestionValue) => void;
+  value: QuestionAnswerType;
+  onChange: (questionId: string, value: QuestionAnswerType) => void;
   question: Question;
   error?: string;
 };
