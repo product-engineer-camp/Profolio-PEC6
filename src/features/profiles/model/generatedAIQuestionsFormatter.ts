@@ -3,7 +3,7 @@ import { Question } from "@/src/entities/profiles/api/type";
 export const generatedAIQuestionsFormatter = (content: string): Question[] => {
   try {
     const questions = JSON.parse(content.replace(/\\n/g, ""));
-    console.log("1", questions);
+
     if (!Array.isArray(questions) || questions.length === 0) {
       throw new Error("유효한 질문 데이터가 없습니다.");
     }
