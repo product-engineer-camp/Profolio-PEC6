@@ -1,5 +1,5 @@
 import { ApiResponse } from "@/shared/api/type";
-import { Profile } from "@/src/entities/profiles/model/profile.type";
+import { Profile } from "@/src/entities/profiles/api/type";
 
 export type CreateProfilePayload = {
   title: string;
