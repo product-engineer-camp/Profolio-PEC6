@@ -8,16 +8,7 @@ type Props = {
 
 export async function GET(request: NextRequest, { params }: Props) {
   try {
-    const { id } = await Promise.resolve(params);
-    const themeId = Number(id);
-
-    if (isNaN(themeId)) {
-      return NextResponse.json(
-        { message: "Invalid theme ID", code: "INVALID_THEME_ID" },
-        { status: 400 },
-      );
-    }
-
+    const themeId = Number(params.id);
     const supabase = await createClient();
 
     const { data: theme, error } = await supabase
