@@ -8,7 +8,7 @@ export type Profile = BaseType & {
   age: number;
   occupation: string;
   hobby: string;
-  currentInterest: string;
+  interest: string;
   coreValue: string;
   strength: string;
   roleModel: string;
