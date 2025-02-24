@@ -13,7 +13,7 @@ import { type ProfileInputType } from "../model/type";
 import { QuestionList } from "@/entities/profiles/ui/QuestionList";
 import { ProfileImageUploader } from "./ProfileImageUploader";
 import { useProfilePreview } from "../model/useProfilePreview";
-import { useProfileCreate } from "../model/useProfileCreate";
+import { useProfileCreationProcess } from "../model/useProfileCreationProcess";
 import { adjustColor } from "@/entities/themes/lib/adjustColor";
 import { CreateProfileButton } from "./CreateProfileButton";
 
@@ -38,7 +38,7 @@ export const ProfilePreviewStep = ({
     handleImageChange,
   } = useProfilePreview();
 
-  const { handleSubmit, isUploading, isCreating } = useProfileCreate({
+  const { handleSubmit, isUploading, isCreating } = useProfileCreationProcess({
     profileInput,
     title,
     imageFile,

@@ -20,7 +20,7 @@ type UseProfileCreateReturn = {
   isCreating: boolean;
 };
 
-export const useProfileCreate = ({
+export const useProfileCreationProcess = ({
   profileInput,
   title,
   imageFile,
