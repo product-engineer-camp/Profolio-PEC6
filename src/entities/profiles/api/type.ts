@@ -1,38 +1,32 @@
-import type { ApiResponse } from "@/src/shared/api/type";
+import type { ApiResponse, BaseType } from "@/src/shared/api/type";
+import { ThemeDetailResponse } from "../../themes/api/types";
 
 export type GetProfileResponse = ApiResponse<Profile>;
 
-export type Profile = {
-  id: number;
-  display_name: string;
+export type Profile = BaseType & {
+  displayName: string;
   age: number;
   occupation: string;
   hobby: string;
-  current_interest: string;
-  core_value: string;
+  currentInterest: string;
+  coreValue: string;
   strength: string;
-  role_model: string;
+  roleModel: string;
   personality: string;
-  relationship_status: string;
-  created_at: string;
-  updated_at: string;
-  share_count: number;
-  theme: {
-    id: number;
-    colors: string;
-    pattern: string;
-  };
-  personalized_questions: PersonalizedQuestion[];
+  relationshipStatus: string;
+  shareCount: number;
+  theme: ThemeDetailResponse;
+  personalizedQuestions: PersonalizedQuestion[];
 };
 
-export type PersonalizedQuestion = {
-  id: string;
+export type QAType = {
   question: string;
   answer: string;
 };
 
+export type PersonalizedQuestion = BaseType & QAType;
+
 export type Question = {
-  id: string;
   order: number;
   question: string;
   isRequired: boolean;

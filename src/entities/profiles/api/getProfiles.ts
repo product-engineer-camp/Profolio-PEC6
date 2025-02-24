@@ -14,14 +14,8 @@ export const getProfiles = async (): Promise<GetProfilesResponse> => {
 
     return data;
   } catch (error) {
-    console.error("프로필 목록 조회 실패:", error);
-    return {
-      success: false,
-      data: [],
-      error:
-        error instanceof Error
-          ? error.message
-          : "프로필 목록을 불러오는데 실패했습니다.",
-    };
+    throw error instanceof Error
+      ? error
+      : new Error("프로필 목록을 불러오는데 실패했습니다.");
   }
 };

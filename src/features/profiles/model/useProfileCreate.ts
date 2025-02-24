@@ -40,11 +40,11 @@ export const useProfileCreate = ({
               const payload = {
                 title: title.trim(),
                 ...transformBasicAnswersToPayload(profileInput.basicAnswers),
-                theme_id: Number(profileInput.themeId),
-                personalized_questions: transformAIAnswersToQuestions(
+                themeId: Number(profileInput.themeId),
+                personalizedQuestions: transformAIAnswersToQuestions(
                   profileInput.aiAnswers,
                 ),
-                avatar_url: uploadResponse.data.url,
+                avatarUrl: uploadResponse.data.url,
               };
 
               createProfile(payload, {

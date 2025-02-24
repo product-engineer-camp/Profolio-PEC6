@@ -14,16 +14,16 @@ export const transformBasicAnswersToPayload = (
   );
 
   return {
-    display_name: answerMap.displayName?.trim() || "",
+    displayName: answerMap.displayName?.trim() || "",
     age: Number(answerMap.age) || 0,
     occupation: answerMap.occupation?.trim() || "",
     hobby: answerMap.hobby?.trim() || "",
     interest: answerMap.interest?.trim() || "",
-    core_value: answerMap.coreValue?.trim() || "",
+    coreValue: answerMap.coreValue?.trim() || "",
     strength: answerMap.strength?.trim() || "",
-    role_model: answerMap.roleModel?.trim() || "",
+    roleModel: answerMap.roleModel?.trim() || "",
     personality: answerMap.personality?.trim() || "",
-    relationship_status: answerMap.relationshipStatus?.trim() || "",
+    relationshipStatus: answerMap.relationshipStatus?.trim() || "",
   };
 };
 

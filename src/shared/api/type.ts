@@ -4,3 +4,10 @@ export type ApiResponse<T> = {
   message?: string;
   error?: string;
 };
+
+export type BaseType = {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string;
+};
