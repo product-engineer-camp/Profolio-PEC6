@@ -1,40 +1,26 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getProfileList } from "../api/getProfileList";
 import type { Profile } from "@/entities/profiles/model/type";
-import { useState, useEffect } from "react";
+
+type ProfileListQueryKey = readonly ["profiles"];
+type ProfileListQueryFnData = Profile[];
 
 export function useProfileList() {
   const queryClient = useQueryClient();
-  const { data: profiles = [] } = useQuery<Profile[]>({
-    queryKey: ["profiles"],
+
+  const {
+    data: profiles = [],
+    isLoading,
+    error,
+  } = useQuery<
+    ProfileListQueryFnData,
+    Error,
+    ProfileListQueryFnData,
+    ProfileListQueryKey
+  >({
+    queryKey: ["profiles"] as const,
     queryFn: getProfileList,
   });
-
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProfiles = async () => {
-      try {
-        setIsLoading(true);
-        const data = await getProfileList();
-        queryClient.setQueryData<Profile[]>(
-          ["profiles"],
-          (oldData) =>
-            oldData?.map((profile) =>
-              profile.id === data[0].id
-                ? { ...profile, shareCount: (profile.shareCount ?? 0) + 1 }
-                : profile,
-            ) ?? [],
-        );
-      } catch (error) {
-        console.error("Failed to fetch profiles:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProfiles();
-  }, [queryClient]);
 
   const updateShareCount = (profileId: number) => {
     queryClient.setQueryData<Profile[]>(
@@ -52,5 +38,6 @@ export function useProfileList() {
     profiles,
     updateShareCount,
     isLoading,
+    error,
   };
 }
