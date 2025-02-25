@@ -6,16 +6,25 @@ import { SortOption } from "@/features/profiles/model/type";
 import { useState } from "react";
 import { sortProfiles } from "@/features/profiles/model/sort";
 import { useProfileList } from "@/features/profiles/model/useProfileList";
+import { LoadingSpinner } from "@/shared/ui/LoadingSpinner";
 
 export function ProfileListWidget() {
   const [currentSort, setCurrentSort] = useState<SortOption>("latest");
-  const { profiles, updateShareCount } = useProfileList();
+  const { profiles, updateShareCount, isLoading } = useProfileList();
 
   const handleSort = (option: SortOption) => {
     setCurrentSort(option);
   };
 
   const sortedProfiles = sortProfiles(profiles, currentSort);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   if (profiles.length === 0) {
     return (

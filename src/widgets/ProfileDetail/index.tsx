@@ -11,6 +11,7 @@ import { putShareCount } from "@/features/profiles/api/putShareCount";
 import { ProfileTitle } from "@/entities/profiles/ui/ProfileTitle";
 import { getProfile } from "@/entities/profiles/api/getProfile";
 import { useState, useEffect } from "react";
+import { LoadingSpinner } from "@/src/shared/ui/LoadingSpinner";
 
 type ProfileDetailProps = {
   profileId: number;
@@ -45,7 +46,7 @@ export function ProfileDetail({ profileId, profileUrl }: ProfileDetailProps) {
     }
   };
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading) return <LoadingSpinner />;
   if (error) return <div>에러가 발생했습니다: {error.message}</div>;
   if (!profile) return <div>프로필을 찾을 수 없습니다.</div>;
 
