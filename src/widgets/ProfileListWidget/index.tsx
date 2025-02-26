@@ -10,7 +10,7 @@ import { LoadingSpinner } from "@/shared/ui/LoadingSpinner";
 
 export function ProfileListWidget() {
   const [currentSort, setCurrentSort] = useState<SortOption>("latest");
-  const { profiles, updateShareCount, isLoading } = useProfileList();
+  const { profiles, updateShareCount, isLoading, error } = useProfileList();
 
   const handleSort = (option: SortOption) => {
     setCurrentSort(option);
@@ -22,6 +22,17 @@ export function ProfileListWidget() {
     return (
       <div className="flex items-center justify-center py-20">
         <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20">
+        <p className="mb-2 text-lg text-red-500">
+          프로필을 불러오는 중 오류가 발생했습니다
+        </p>
+        <p className="text-gray-400">잠시 후 다시 시도해주세요</p>
       </div>
     );
   }
