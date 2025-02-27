@@ -1,4 +1,5 @@
 import { Profile } from "../model/type";
+import { PROFILE_API_MESSAGES } from "@/features/profiles/api/constants";
 
 type GetProfileResponse = {
   profile: Profile;
@@ -24,7 +25,7 @@ export async function getProfile(id: number): Promise<Profile | null> {
         return null;
       }
       throw new Error(
-        "프로필 정보를 불러오는데 실패했습니다." +
+        PROFILE_API_MESSAGES.GET_FAILED +
           `(Status: ${response.status} ${response.statusText})`,
       );
     }
@@ -32,7 +33,7 @@ export async function getProfile(id: number): Promise<Profile | null> {
     const data = await response.json();
 
     if (!isGetProfileResponse(data)) {
-      throw new Error("잘못된 응답 형식입니다.");
+      throw new Error(PROFILE_API_MESSAGES.INVALID_RESPONSE);
     }
 
     return data.profile;
@@ -41,6 +42,6 @@ export async function getProfile(id: number): Promise<Profile | null> {
       throw error;
     }
 
-    throw new Error("프로필 정보를 불러오는데 실패했습니다.");
+    throw new Error(PROFILE_API_MESSAGES.GET_FAILED);
   }
 }
