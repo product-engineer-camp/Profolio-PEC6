@@ -1,11 +1,7 @@
-type DeleteProfileResponse = {
-  success: boolean;
-  error?: string;
-};
+import { ApiResponse } from "./types";
+import { PROFILE_API_MESSAGES } from "./constants";
 
-export async function deleteProfile(
-  profileId: number,
-): Promise<DeleteProfileResponse> {
+export async function deleteProfile(profileId: number): Promise<ApiResponse> {
   try {
     const response = await fetch(`/api/profiles/${profileId}`, {
       method: "DELETE",
@@ -14,23 +10,19 @@ export async function deleteProfile(
       },
     });
 
-    const data = await response.json();
-
     if (!response.ok) {
-      return {
-        success: false,
-        error: data.error || "프로필 삭제에 실패했습니다.",
-      };
+      throw new Error(PROFILE_API_MESSAGES.DELETE_FAILED);
     }
 
     return {
       success: true,
+      message: PROFILE_API_MESSAGES.DELETE_SUCCESS,
     };
   } catch (error) {
-    console.error("Error deleting profile:", error);
-    return {
-      success: false,
-      error: "프로필 삭제 중 오류가 발생했습니다.",
-    };
+    if (error instanceof Error) {
+      throw error;
+    }
+
+    throw new Error(PROFILE_API_MESSAGES.DELETE_FAILED);
   }
 }

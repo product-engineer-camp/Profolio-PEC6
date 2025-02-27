@@ -3,33 +3,50 @@
 import { ProfileList } from "@/features/profiles/ui/ProfileList";
 import { ProfileSortingDropdownMenu } from "@/features/profiles/ui/ProfileSortingDropdownMenu";
 import { SortOption } from "@/features/profiles/model/type";
-import { Profile } from "@/entities/profiles/model/type";
 import { useState } from "react";
-import { getProfileList } from "@/features/profiles/api/getProfileList";
+import { sortProfiles } from "@/features/profiles/model/sort";
+import { useProfileList } from "@/features/profiles/model/useProfileList";
+import { LoadingSpinner } from "@/shared/ui/LoadingSpinner";
 
-type ProfileListWidgetProps = {
-  initialProfiles: Profile[];
-};
-
-export function ProfileListWidget({ initialProfiles }: ProfileListWidgetProps) {
+export function ProfileListWidget() {
   const [currentSort, setCurrentSort] = useState<SortOption>("latest");
-  const [profiles, setProfiles] = useState<Profile[]>(initialProfiles);
-  const [isLoading, setIsLoading] = useState(false);
+  const { profiles, updateShareCount, isLoading, error } = useProfileList();
 
-  const handleSort = async (option: SortOption) => {
-    try {
-      setIsLoading(true);
-      setCurrentSort(option);
-
-      const response = await getProfileList(option);
-      setProfiles(response);
-    } catch (error) {
-      console.error("Failed to fetch profiles:", error);
-      // 에러 처리를 위한 상태 관리가 필요하다면 추가해주세요
-    } finally {
-      setIsLoading(false);
-    }
+  const handleSort = (option: SortOption) => {
+    setCurrentSort(option);
   };
+
+  const sortedProfiles = sortProfiles(profiles, currentSort);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20">
+        <p className="mb-2 text-lg text-red-500">
+          프로필을 불러오는 중 오류가 발생했습니다
+        </p>
+        <p className="text-gray-400">잠시 후 다시 시도해주세요</p>
+      </div>
+    );
+  }
+
+  if (profiles.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20">
+        <p className="mb-2 text-lg text-gray-500">
+          아직 등록된 프로필이 없습니다
+        </p>
+        <p className="text-gray-400">새로운 프로필을 등록해보세요!</p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -37,16 +54,13 @@ export function ProfileListWidget({ initialProfiles }: ProfileListWidgetProps) {
         <ProfileSortingDropdownMenu
           currentSort={currentSort}
           onSort={handleSort}
-          disabled={isLoading}
         />
       </div>
-      {isLoading ? (
-        <div className="flex justify-center py-8">
-          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900" />
-        </div>
-      ) : (
-        <ProfileList profiles={profiles} currentSort={currentSort} />
-      )}
+      <ProfileList
+        profiles={sortedProfiles}
+        currentSort={currentSort}
+        onUpdateShareCount={updateShareCount}
+      />
     </div>
   );
 }

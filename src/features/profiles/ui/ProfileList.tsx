@@ -19,9 +19,14 @@ import Link from "next/link";
 type ProfileListProps = {
   profiles: Profile[];
   currentSort: SortOption;
+  onUpdateShareCount?: (profileId: number) => void;
 };
 
-export function ProfileList({ profiles, currentSort }: ProfileListProps) {
+export function ProfileList({
+  profiles,
+  currentSort,
+  onUpdateShareCount,
+}: ProfileListProps) {
   if (!profiles || !Array.isArray(profiles)) {
     return <div>프로필을 불러올 수 없습니다.</div>;
   }
@@ -29,6 +34,7 @@ export function ProfileList({ profiles, currentSort }: ProfileListProps) {
   const handleShare = async (profileId: number) => {
     try {
       await putShareCount(profileId);
+      onUpdateShareCount?.(profileId);
     } catch (error) {
       console.error("공유 처리 중 오류 발생:", error);
     }

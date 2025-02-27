@@ -1,29 +1,46 @@
 import { Profile } from "@/entities/profiles/model/type";
-import type { SortOption } from "@/features/profiles/model/type";
+import { PROFILE_API_MESSAGES } from "./constants";
 
-export async function getProfileList(
-  sort: SortOption = "latest",
-): Promise<Profile[]> {
+type GetProfileListResponse = {
+  profiles: Profile[];
+};
+
+function isGetProfileListResponse(
+  data: unknown,
+): data is GetProfileListResponse {
+  return (
+    typeof data === "object" &&
+    data !== null &&
+    "profiles" in data &&
+    Array.isArray(data.profiles)
+  );
+}
+
+export async function getProfileList(): Promise<Profile[]> {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/profiles`,
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch profiles");
+      throw new Error(
+        PROFILE_API_MESSAGES.GET_LIST_FAILED +
+          `(Status: ${response.status} ${response.statusText})`,
+      );
     }
 
     const data = await response.json();
 
-    // 응답이 배열인지 확인
-    if (!Array.isArray(data)) {
-      // data.profiles와 같은 형태로 오는 경우를 처리
-      return Array.isArray(data.profiles) ? data.profiles : [];
+    if (!isGetProfileListResponse(data)) {
+      throw new Error(PROFILE_API_MESSAGES.INVALID_RESPONSE);
     }
 
-    return data;
+    return data.profiles;
   } catch (error) {
-    console.error("Error fetching profiles:", error);
-    return [];
+    if (error instanceof Error) {
+      throw error;
+    }
+
+    throw new Error(PROFILE_API_MESSAGES.GET_LIST_FAILED);
   }
 }
