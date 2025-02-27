@@ -1,28 +1,31 @@
 import { Profile } from "@/entities/profiles/model/type";
 import { SortOption } from "./type";
+import { sortBy } from "@/shared/lib/utils/sort";
 
 export const sortProfiles = (
   profiles: Profile[],
   sortOption: SortOption,
 ): Profile[] => {
-  const sortedProfiles = [...profiles];
-
   switch (sortOption) {
     case "shares":
-      return sortedProfiles.sort(
-        (a, b) => (b.shareCount ?? 0) - (a.shareCount ?? 0),
+      return sortBy(
+        profiles,
+        (profile: Profile) => profile.shareCount ?? 0,
+        "desc",
       );
     case "latest":
-      return sortedProfiles.sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      return sortBy(
+        profiles,
+        (profile: Profile) => new Date(profile.createdAt).getTime(),
+        "desc",
       );
     case "updated":
-      return sortedProfiles.sort(
-        (a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+      return sortBy(
+        profiles,
+        (profile: Profile) => new Date(profile.updatedAt).getTime(),
+        "desc",
       );
     default:
-      return sortedProfiles;
+      return [...profiles];
   }
 };
