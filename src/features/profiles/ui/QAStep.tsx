@@ -3,7 +3,8 @@ import { ProgressBar } from "@/shared/ui/ProgressBar";
 import { QuestionInput } from "./QuestionInput";
 import { ProfileQuestionAnswer, QuestionAnswerType } from "../model/type";
 import { Question } from "@/src/entities/profiles/api/type";
-import { useStepNavigation } from "../../../shared/model/useStepNavigation";
+import { useStepNavigation } from "@/src/shared/model/useStepNavigation";
+
 type QAStepProps = {
   questions: Question[];
   answers: ProfileQuestionAnswer[];
