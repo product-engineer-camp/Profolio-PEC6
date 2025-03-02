@@ -5,8 +5,6 @@ import { ProfilePreviewStep } from "@/features/profiles/ui/ProfilePreviewStep";
 import { LoadingView } from "@/shared/ui/LoadingView";
 import { ErrorView } from "@/shared/ui/ErrorView";
 import { Button } from "@/shared/ui/button";
-import { useProfileCreateStep } from "../model/useProfileCreateStep";
-import { useQAFlow } from "@/features/profiles/model/useQAFlow";
 import { useProfileData } from "../model/useProfileData";
 import { ProfileQuestionAnswer } from "@/features/profiles/model/type";
 import { useAIGenerateQuestions } from "@/features/profiles/model/useAIGenerateQuestions";
@@ -14,9 +12,14 @@ import { useAnswers } from "@/features/profiles/model/useAnswers";
 import { useBasicQuestions } from "@/entities/profiles/model/useBasicQuestions";
 import { StepIndicator } from "@/entities/profiles/ui/StepIndicator";
 import { PROFILE_CREATE_STEPS } from "@/src/entities/profiles/constants/profileCreateSteps";
+import { useQueryParamState } from "../../../shared/model/useQueryParamState";
 
 export default function CreateProfileProcess() {
-  const { currentStep, updateStep } = useProfileCreateStep();
+  const { value: currentStep, updateValue: updateStep } = useQueryParamState(
+    "step",
+    1,
+    "/profiles/create",
+  );
   const { profileInput, updateBasicAnswers, updateAIAnswers, updateThemeId } =
     useProfileData();
   const { data: basicQuestionsData, isLoading: isLoadingBasicQuestions } =
@@ -49,20 +52,6 @@ export default function CreateProfileProcess() {
     updateAIAnswers(answers);
     updateStep(3);
   };
-
-  const basicNavigation = useQAFlow({
-    totalSteps: basicQuestionsData?.questions.length || 0,
-    onComplete: () => {
-      handleBasicQAComplete(basicAnswers);
-    },
-  });
-
-  const aiNavigation = useQAFlow({
-    totalSteps: aiGeneratedQuestions.length,
-    onComplete: () => {
-      handleAIQAComplete(aiAnswers);
-    },
-  });
 
   const handleThemeSelect = (themeId: string) => {
     updateThemeId(themeId);
@@ -111,7 +100,7 @@ export default function CreateProfileProcess() {
     <div className="space-y-8">
       <StepIndicator
         steps={PROFILE_CREATE_STEPS}
-        currentStep={currentStep}
+        currentStep={Number(currentStep)}
         className="mb-8"
       />
       {
@@ -120,21 +109,19 @@ export default function CreateProfileProcess() {
             <QAStep
               questions={basicQuestionsData?.questions || []}
               isLoading={isLoadingBasicQuestions}
-              currentQuestionIndex={basicNavigation.currentQAIndex}
               answers={basicAnswers}
               onAnswer={handleBasicAnswer}
-              onNext={basicNavigation.handleNext}
-              onPrevious={basicNavigation.handlePrevious}
+              totalSteps={basicQuestionsData?.questions.length || 0}
+              onComplete={() => handleBasicQAComplete(basicAnswers)}
             />
           ),
           2: (
             <QAStep
               questions={aiGeneratedQuestions}
-              currentQuestionIndex={aiNavigation.currentQAIndex}
               answers={aiAnswers}
               onAnswer={handleAIAnswer}
-              onNext={aiNavigation.handleNext}
-              onPrevious={aiNavigation.handlePrevious}
+              totalSteps={aiGeneratedQuestions.length}
+              onComplete={() => handleAIQAComplete(aiAnswers)}
             />
           ),
           3: (
