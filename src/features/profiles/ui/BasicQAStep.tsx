@@ -9,15 +9,13 @@ type BasicQAStepProps = {
 };
 
 export const BasicQAStep = ({ basicAnswers, onComplete }: BasicQAStepProps) => {
-  const { data: basicQuestionsData, isLoading: isLoadingBasicQuestions } =
-    useBasicQuestions();
+  const { data: basicQuestionsData } = useBasicQuestions();
 
   const { answers, handleAnswer: handleBasicAnswer } = useAnswers(basicAnswers);
 
   return (
     <QAStep
       questions={basicQuestionsData?.questions || []}
-      isLoading={isLoadingBasicQuestions}
       answers={answers}
       onAnswer={handleBasicAnswer}
       totalSteps={basicQuestionsData?.questions.length || 0}

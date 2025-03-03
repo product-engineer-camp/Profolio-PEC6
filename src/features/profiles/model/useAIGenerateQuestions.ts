@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { ProfileQuestionAnswer } from "./type";
 import { generateAIQuestions } from "../api/generateAIQuestions";
 
@@ -11,14 +11,7 @@ import { generateAIQuestions } from "../api/generateAIQuestions";
 export const useAIGenerateQuestions = (
   basicAnswers: ProfileQuestionAnswer[],
 ) => {
-  const {
-    data: questions = [],
-    isLoading,
-    isError,
-    error,
-    isSuccess,
-    refetch,
-  } = useQuery({
+  const { data: questions = [], refetch } = useSuspenseQuery({
     queryKey: ["aiQuestions", basicAnswers],
     queryFn: async () => {
       const result = await generateAIQuestions(basicAnswers);
@@ -31,10 +24,6 @@ export const useAIGenerateQuestions = (
 
   return {
     questions,
-    isLoading,
-    isError,
-    isSuccess,
-    error: isError ? (error as Error) : null,
     retry: refetch,
   };
 };

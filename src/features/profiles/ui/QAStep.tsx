@@ -15,12 +15,10 @@ type QAStepProps = {
   ) => void;
   totalSteps: number;
   onComplete?: () => void;
-  isLoading?: boolean;
 };
 
 export const QAStep = ({
   questions,
-  isLoading,
   answers,
   onAnswer,
   totalSteps,
@@ -33,14 +31,6 @@ export const QAStep = ({
     });
 
   const currentQuestion = questions[currentStepIndex];
-
-  if (isLoading) {
-    return (
-      <div className="flex h-[400px] w-full items-center justify-center bg-background">
-        질문을 불러오는 중...
-      </div>
-    );
-  }
 
   if (!currentQuestion) {
     return (
